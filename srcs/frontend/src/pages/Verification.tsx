@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
+const API_URL = '/auth/api/verify';
+
 const Verification = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -18,7 +20,7 @@ const Verification = () => {
 
     console.log("Verifying code:", code);
     try {
-      const response = await fetch('/auth/api/activation', {
+      const response = await fetch(API_URL, {
         method: 'POST',
         headers: {
           "Content-type":"application/json",

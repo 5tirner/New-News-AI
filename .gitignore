@@ -1,2 +1,6 @@
 myenv
 .env
+node_modules
+dist
+.vscode
+db.sqlite3
