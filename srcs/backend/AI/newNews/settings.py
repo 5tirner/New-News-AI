@@ -43,12 +43,15 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'daphne',
+    'channels',
     'django.contrib.contenttypes',
     'rest_framework',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'zauth',
+    'ai',
 ]
 
 MIDDLEWARE = [
@@ -79,7 +82,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'newNews.wsgi.application'
+ASGI_APPLICATION = 'newNews.asgi.application'
 
 
 # Database
