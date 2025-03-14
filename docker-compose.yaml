@@ -1,0 +1,26 @@
+services:
+  newnews:
+    container_name: backend
+    build: ./srcs/backend/
+    image: backendimage
+    init: true
+    networks:
+      - net
+    env_file:
+      - ./.env
+
+  nginx:
+    container_name: nginx
+    build: ./srcs/reverse_proxy
+    image: nginximg
+    ports:
+      - '4444:80'
+    depends_on:
+      - newnews
+    init: true
+    networks:
+      - net
+
+networks:
+  net:
+    name: yoursport_network
