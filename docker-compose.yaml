@@ -9,6 +9,17 @@ services:
     env_file:
       - ./.env
 
+  frontend:  
+    container_name: frontend
+    depends_on:
+      - newnews
+    build: ./srcs/frontend/
+    ports:
+      - "3000:3000"
+    networks:
+      - net
+
+
   nginx:
     container_name: nginx
     build: ./srcs/reverse_proxy
