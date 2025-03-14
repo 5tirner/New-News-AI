@@ -59,7 +59,7 @@ const Verification = () => {
             <input
               type="text"
               value={code}
-              onChange={(e) => setCode(e.target.value.toUpperCase())} // Convert to uppercase
+              onChange={(e) => setCode(e.target.value)} // Convert to uppercase  .toUpperCase()
               className="w-full mt-1 p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-lg tracking-widest"
               maxLength={8}
               required
