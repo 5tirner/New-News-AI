@@ -15,6 +15,10 @@ import os, dotenv
 
 dotenv.load_dotenv()
 
+#News Apis
+NEWS_API = os.getenv('NEWS_API')
+DEEPSEEK_API = os.getenv('DEEPSEEK_API')
+
 #SMTP CONFIG
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
