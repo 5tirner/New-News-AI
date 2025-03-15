@@ -17,7 +17,11 @@ dotenv.load_dotenv()
 
 #News Apis
 NEWS_API = os.getenv('NEWS_API')
-DEEPSEEK_API = os.getenv('DEEPSEEK_API')
+NEWS_URL = os.getenv('NEWS_URL')
+
+#Gemini Apis
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+GEMINI_MODEL = os.getenv('GEMINI_MODEL')
 
 #SMTP CONFIG
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

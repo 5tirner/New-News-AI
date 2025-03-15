@@ -1,11 +1,14 @@
 import requests
 import google.generativeai as gemini
+import dotenv
 
-gemini.configure(api_key=API)
-aimodel = gemini.GenerativeModel(URL)
+dotenv.load_dotenv()
 
-url = URL
-params = {'q': 'football', 'language': 'en', 'sortBy': 'publishedAt', 'apiKey': API, 'pageSize': 1}
+gemini.configure(api_key='API')
+aimodel = gemini.GenerativeModel('URL')
+
+url = 'URL'
+params = {'q': 'football', 'language': 'en', 'sortBy': 'publishedAt', 'apiKey': 'API', 'pageSize': 1}
 
 response = requests.get(url, params=params)
 if response.status_code == 200:
