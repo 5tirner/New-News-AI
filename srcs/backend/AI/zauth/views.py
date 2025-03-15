@@ -54,7 +54,7 @@ def signup(req):
             else:
                 return response.Response(verification_serial.errors,
                                          status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-            mail.send_mail('New News Ai - ACTIVATION', f"Hello {serial.validated_data['email']}\nYour Activation Code is:{code}\nBest Regards,\nNew News Ai team",
+            mail.send_mail('New News Ai - ACTIVATION', f"Hello {serial.validated_data['email']}\nYour Activation Code is:{code}\nBest Regards,\nNew News Ai team.",
                            settings.EMAIL_HOST_USER, [serial.validated_data['email']])
         except Exception as e:
             print(f"RED: Failed Cuase: {e}")

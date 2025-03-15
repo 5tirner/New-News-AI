@@ -15,6 +15,14 @@ import os, dotenv
 
 dotenv.load_dotenv()
 
+#News Apis
+NEWS_API = os.getenv('NEWS_API')
+NEWS_URL = os.getenv('NEWS_URL')
+
+#Gemini Apis
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+GEMINI_MODEL = os.getenv('GEMINI_MODEL')
+
 #SMTP CONFIG
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -43,12 +51,15 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'daphne',
+    'channels',
     'django.contrib.contenttypes',
     'rest_framework',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'zauth',
+    'ai',
 ]
 
 MIDDLEWARE = [
@@ -79,7 +90,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'newNews.wsgi.application'
+ASGI_APPLICATION = 'newNews.asgi.application'
 
 
 # Database
