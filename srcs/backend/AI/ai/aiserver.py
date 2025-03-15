@@ -12,8 +12,8 @@ class lastNews(AsyncJsonWebsocketConsumer):
     async def receive_json(self, content, **kwargs):
         while True:
             print(content)
-            url = 'https://newsapi.org/v2/everything'
-            params = {'q': 'football', 'language': 'en', 'sortBy': 'publishedAt', 'apiKey': "6a3ac6539c9d49a594562beb82aad3b2", 'pageSize': 1}
+            url = NEWSURL
+            params = {'q': 'football', 'language': 'en', 'sortBy': 'publishedAt', 'apiKey': NEW_API, 'pageSize': 1}
             response = requests.get(url, params=params)
             if response.status_code == 200:
                 article = response.json()['articles'][0]
