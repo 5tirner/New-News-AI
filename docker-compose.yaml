@@ -17,7 +17,7 @@ services:
     networks:
       - net
     volumes:
-      - ./srcs/frontend:/app
+      - ./srcs/frontend:/app/
 
   nginx:
     container_name: nginx

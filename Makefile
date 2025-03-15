@@ -1,7 +1,7 @@
 FRONT_DIR = ./srcs/frontend
 
 all : 
-	docker-compose up --build
+	docker compose up --build
 
 clean: 
 	docker system prune -af
