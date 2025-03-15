@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
+const API_URL = '/auth/api/verify';
+
 const Verification = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -18,7 +20,7 @@ const Verification = () => {
 
     console.log("Verifying code:", code);
     try {
-      const response = await fetch('/auth/api/activation', {
+      const response = await fetch(API_URL, {
         method: 'POST',
         headers: {
           "Content-type":"application/json",
@@ -57,7 +59,7 @@ const Verification = () => {
             <input
               type="text"
               value={code}
-              onChange={(e) => setCode(e.target.value.toUpperCase())} // Convert to uppercase
+              onChange={(e) => setCode(e.target.value)} // Convert to uppercase  .toUpperCase()
               className="w-full mt-1 p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-lg tracking-widest"
               maxLength={8}
               required

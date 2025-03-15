@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 
-const API_URL = `/auth/api/sign_in`;
+const API_URL = `/auth/api/signin`;
 
 const Login = () => {
   const navigate = useNavigate();

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 
-const API_URL = '/auth/api/sign_up';
+const API_URL = '/auth/api/signup';
 
 const SignUp = () => {
   const navigate = useNavigate();

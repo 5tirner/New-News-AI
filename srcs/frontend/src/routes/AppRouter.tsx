@@ -1,11 +1,10 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Home";
-import Teams from "../pages/Teams";
-import Tournaments from "../pages/Tournaments";
 import Login from "../pages/Login";
 import SignUp from "../pages/SignUp";
 import ProtectedRoute from "./ProtectedRoute";
 import Verification from "../pages/Verification";
+import FirstPage from "../pages/FirstPage";
 
 const AppRouter = () => {
   return (
@@ -14,11 +13,12 @@ const AppRouter = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/verify" element={< Verification/>} />
+        <Route path="/home" element={< Home/>} />
+        <Route path="/" element={< FirstPage/>} />
+        
 
         {/* Protected Routes */}
-        <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-        <Route path="/teams" element={<ProtectedRoute><Teams /></ProtectedRoute>} />
-        <Route path="/tournaments" element={<ProtectedRoute><Tournaments /></ProtectedRoute>} />
+        {/* <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} /> */}
       </Routes>
   );
 };
