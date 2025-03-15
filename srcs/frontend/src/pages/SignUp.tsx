@@ -41,7 +41,6 @@ const SignUp = () => {
 
     } catch(e) {
       console.log(e.message);
-      
     }
   };
 

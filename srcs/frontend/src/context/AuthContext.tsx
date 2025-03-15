@@ -10,11 +10,34 @@ interface AuthContextType {
 // Create AuthContext
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const API_URL = '/auth/api/profile';
+
 // AuthProvider Component
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
     !!localStorage.getItem("Access-Token") || !!localStorage.getItem("Refresh-Token")  // Check if user is logged in
   );
+
+  const checkAuth = async () => {
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok)
+        throw new Error("from backend ,Error status : " + response.status);
+      
+      console.log("redirecting to verification ...");
+      
+      console.log("Response : ", response.json());
+    } catch(e) {
+      console.log(e.message);
+    }
+  };
+
+  checkAuth();
 
   const login = () => {
     setIsAuthenticated(true);
