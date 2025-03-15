@@ -5,6 +5,7 @@ from django.core import mail
 from django.conf import settings
 from .isStrong import validate_passwd
 import bcrypt, string, random
+from ai.models import conversations
 
 def is_auth_user(access_token, refresh_token):
     try:
@@ -54,7 +55,7 @@ def signup(req):
             else:
                 return response.Response(verification_serial.errors,
                                          status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-            mail.send_mail('New News Ai - ACTIVATION', f"Hello {serial.validated_data['email']}\nYour Activation Code is:{code}\nBest Regards,\nNew News Ai team.",
+            mail.send_mail('New News Ai - ACTIVATION', f"Hello {serial.validated_data['email']}\nYour Activation Code is: {code}\nBest Regards,\nNew News Ai team.",
                            settings.EMAIL_HOST_USER, [serial.validated_data['email']])
         except Exception as e:
             print(f"RED: Failed Cuase: {e}")
@@ -76,6 +77,11 @@ def verify(req):
             activateUser.activation = True
             activateUser.save()
             user.delete()
+            try:
+                AddUserTopics = conversations.objects.create(identity=req.data.get('email'), topics=dict())
+                AddUserTopics.save()
+            except Exception as e:
+                print(e)
             return response.Response({
                 'Activation': 'Succefull Activation', 'Email': activateUser.email},
                 status=status.HTTP_200_OK)
@@ -112,7 +118,6 @@ def signin(req):
 
 @decorators.api_view(['GET'])
 def profile_data(req):
-    print(req.headers)
     try:
         user_data = is_auth_user(req.headers.get('Access-Token'), req.headers.get('Refresh-Token'))
     except Exception as error:

@@ -20,7 +20,7 @@ class lastNews(AsyncJsonWebsocketConsumer):
                 title = article['title']
                 subj = article['description']
                 print(f"Title: {title}")
-                print(f"Sunject:\n{subj}")
+                print(f"SuBject:\n{subj}")
             else:
                 print("=== Google News API FAIL ===")
             await asyncio.sleep(60)

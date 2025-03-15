@@ -9,6 +9,9 @@ RUN pip install bcrypt
 RUN pip install dotenv
 RUN pip install channels
 RUN pip install daphne
+RUN pip install requests
+RUN pip install google-generativeai
+RUN pip install jsonfield
 COPY ./AI .
 COPY ./run/run.sh .
 RUN chmod +x run.sh

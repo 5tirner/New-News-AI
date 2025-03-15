@@ -1,4 +1,5 @@
 from django.db import models
+from jsonfield import JSONField
 
 class auth_db(models.Model):
     email = models.EmailField(unique=True, null=False, primary_key=True)

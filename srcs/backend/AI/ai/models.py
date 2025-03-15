@@ -1,3 +1,6 @@
 from django.db import models
+from jsonfield import JSONField
 
-# Create your models here.
+class conversations(models.Model):
+    identity = models.EmailField(unique=True, null=False, primary_key=True)
+    topics = JSONField()
