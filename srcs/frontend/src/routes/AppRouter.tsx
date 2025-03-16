@@ -5,6 +5,7 @@ import SignUp from "../pages/SignUp";
 import ProtectedRoute from "./ProtectedRoute";
 import Verification from "../pages/Verification";
 import FirstPage from "../pages/FirstPage";
+import NewsPage from "../pages/newsPage";
 
 const AppRouter = () => {
   return (
@@ -15,6 +16,7 @@ const AppRouter = () => {
         <Route path="/verify" element={< Verification/>} />
         <Route path="/home" element={< Home/>} />
         <Route path="/" element={< FirstPage/>} />
+        <Route path="/news" element={< NewsPage/>} />
         
 
         {/* Protected Routes */}
