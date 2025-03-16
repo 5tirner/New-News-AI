@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAlert } from "../context/AlertContext";
 
 
 const API_URL = '/auth/api/signup';
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const { showAlert } = useAlert();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,7 +16,7 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      showAlert("Passwords do not match. Please try again.", "error");
       return;
     }
     console.log("Signing up with", { name, email, password });
@@ -41,7 +43,6 @@ const SignUp = () => {
 
     } catch(e) {
       console.log(e.message);
-      
     }
   };
 
