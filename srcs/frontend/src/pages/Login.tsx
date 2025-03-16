@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-
+import { useAlert } from "../context/AlertContext";
 
 const API_URL = `/auth/api/signin`;
 
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const { showAlert } = useAlert();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -33,14 +34,22 @@ const Login = () => {
         throw new Error(`Response status : ${response.status}`);
 
       const json = await response.json();
-      localStorage.setItem("Access-Token", json["Access-Token"]);
-      localStorage.setItem("Refresh-Token", json["Refresh-Token"]);
+      document.cookie = `Access-Token=${json["Access-Token"]}`;
+      document.cookie = `Refresh-Token=${json["Refresh-Token"]}`;
+
+      // localStorage.setItem("Access-Token", json["Access-Token"]);
+      // localStorage.setItem("Refresh-Token", json["Refresh-Token"]);
       login();
       console.log(json);
-      navigate('/');
+      navigate('/home');
 
-    } catch (e) {
-      console.error(e.message);
+    } catch (error) {
+      try{
+        showAlert("Invalid email or password. Please try again.", "error");
+      }catch (e) {
+        console.log(e.message);
+      }
+      console.error("catch the Error here : "+error.message);
     }
   };
 

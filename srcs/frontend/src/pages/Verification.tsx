@@ -1,24 +1,24 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useAlert } from "../context/AlertContext";
 
 const API_URL = '/auth/api/verify';
 
 const Verification = () => {
+  const { showAlert } = useAlert();
   const navigate = useNavigate();
   const location = useLocation();
   const email = location.state?.email || "";
   const [code, setCode] = useState("");
-  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (code.length !== 8) {
-      setError("The verification code must be exactly 7 characters.");
+      showAlert("The verification code must be exactly 7 characters.", "error");
       return;
     }
 
-    console.log("Verifying code:", code);
     try {
       const response = await fetch(API_URL, {
         method: 'POST',
@@ -36,12 +36,14 @@ const Verification = () => {
       {
         throw new Error(json);
       }
+      
+      showAlert("Account created successfully! You can now log in.", "success");
       navigate('/login');
 
     } catch (error) {
 
+      showAlert("The verification code does not correct.", "error");
       console.log("Error from backend");
-      setError(error.message);
     }
   };
 
@@ -64,7 +66,6 @@ const Verification = () => {
               maxLength={8}
               required
             />
-            {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
           </div>
 
           <button
