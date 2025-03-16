@@ -18,15 +18,15 @@ def add_conversation(req):
     except Exception as error:
         return response.Response({'Authentication': 'Permission Needed'},
                                  status=status.HTTP_404_NOT_FOUND)
-    topic_name = req.data.get('topic_name')
+    conv_id = req.data.get('conversation_id')
     message = req.data.get('message')
     userTopics = conversations.objects.get(identity=user_data.identity)
-    if topic_name is None or message is None:
-        return response.Response({'topic_name': 'required field', 'message': 'requirde field'}, status=status.HTTP_400_BAD_REQUEST)
-    theTopic = userTopics.topics.get(topic_name)
+    if conv_id is None or message is None:
+        return response.Response({'conversation_id': 'required field', 'message': 'requirde field'}, status=status.HTTP_400_BAD_REQUEST)
+    theTopic = userTopics.topics.get(conv_id)
     if theTopic is None:
         print("New Topic")
-        userTopics.topics[topic_name] = {1: message}
+        userTopics.topics[conv_id] = {1: message}
     else:
         print("Existance topic")
         lastIndex = len(theTopic.keys()) + 1
@@ -34,3 +34,18 @@ def add_conversation(req):
     userTopics.save()
     print(userTopics)
     return response.Response({'Topic': 'Updated'}, status=status.HTTP_200_OK)
+
+@decorators.api_view(["GET"])
+def get_convertation(req):
+    try:
+        user_data = is_auth_user(req.headers.get('Access-Token'), req.headers.get('Refresh-Token'))
+    except Exception as error:
+        return response.Response({'Authentication': 'Permission Needed'},
+                                 status=status.HTTP_404_NOT_FOUND)
+    conv_id = req.data.get('conversation_id')
+    userTopics = conversations.objects.get(identity=user_data.identity)
+    conv = userTopics.topics.get(conv_id)
+    if conv is None:
+        return response.Response({'conversation_id': 'Not Found'}, status=status.HTTP_400_BAD_REQUEST)
+    return response.Response(conv, status=status.HTTP_200_OK)
+
