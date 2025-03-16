@@ -34,9 +34,9 @@ const NewsPage = () => {
           {newsData.map((news, index) => (
             <div
               key={index}
-              className="w-[80%] md:w-[60%] border-2 border-black p-4 shadow-[4px_4px_0px_rgba(0,0,0,1)]"
+              className="w-[80%] md:w-[60%] border-2 border-black p-4 shadow-[4px_4px_0px_rgba(0,0,0,1)] text-left"
             >
-              <h3 className="font-bold">{news.title}</h3>
+              <h3 className="font-bold ">{news.title}</h3>
               <p className="text-sm mt-1">{news.content}</p>
               <button className="mt-4 border-2 border-black px-4 py-2 bg-gray-700 text-white shadow-[2px_2px_0px_rgba(0,0,0,1)]">
                 Talk to Journalist!

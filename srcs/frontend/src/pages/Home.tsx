@@ -40,17 +40,17 @@ const ChatSection = () => {
   };
 
   return (
-    <div className="min-h-96 w-full flex flex-col items-center justify-end gap-5">
+    <div className="h-full w-full flex flex-col items-center justify-end gap-5">
       <div className="w-[84%] flex flex-col gap-2 items-center justify-center">
         {messages.map((message, index) => (
           <div
             key={index}
             className={`w-[100%] p-2 border-black border shadow-[2px_2px_0px_rgba(0,0,0,1)]  ${
-              message.isUser ? "bg-[#F5E6CF ] self-end" : "bg-gray-200 self-start"
+              message.isUser ? "bg-[#F5E6CF] self-end" : "bg-gray-200 self-start"
             }`}
           >
             <p className={message.isUser ? "text-right" : "text-left"}>
-              {message.isUser ? "You: " : "Journalist: "} {message.text}
+              {message.isUser ? "" : "Journalist: "} {message.text}
             </p>
           </div>
         ))}
@@ -65,7 +65,7 @@ const ChatSection = () => {
           className="w-[70%] p-2 border border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] "
         />
         <button
-          className="border border-black  h-[100%] w-[10%] shadow-[2px_2px_0px_rgba(0,0,0,1)]"
+          className="border border-black size-fit w-[5%] shadow-[2px_2px_0px_rgba(0,0,0,1)]"
           onClick={handleSendMessage}
           disabled={isLoading} // Disable button when bot is responding
         >
@@ -95,7 +95,7 @@ function NewsFieldsPage() {
 
   }
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen bg-[#fdfbee]">
       {/* Sidebar */}
       <div
         className={`${
@@ -146,7 +146,7 @@ function NewsFieldsPage() {
                 </div>
           </>
         ) : (
-          <div className="w-[100%] flex flex-col items-end ">
+          <div className="w-[100%] h-[100%] flex flex-col items-end">
           <button onClick={() => handleBacktoField()} className="border-black w-20 border-2 px-4 py-2  bg-white shadow-[2px_2px_0px_rgba(0,0,0,1)]">
                     Back
             </button>
