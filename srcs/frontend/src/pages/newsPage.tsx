@@ -14,6 +14,7 @@ const NewsPage = () => {
     },
   ];
 
+    
   return (
     <div className="bg-[#fdfbee] min-h-screen">
  
