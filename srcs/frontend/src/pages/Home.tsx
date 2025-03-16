@@ -3,42 +3,78 @@ import { useState } from "react";
 
 
 const ChatSection = () => {
-  const [messages, setMessages] = useState<string[]>([]);
-  const [newMessage, setNewMessage] = useState<string>('');
+  const [messages, setMessages] = useState<{ text: string; isUser: boolean }[]>([]);
+  const [newMessage, setNewMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // Loading state for bot response
 
-  // Function to handle message submission
-  const handleSendMessage = () => {
-    if (newMessage.trim() !== '') {
-      setMessages([...messages, newMessage]);
-      setNewMessage(''); // Clear input field after sending
+  const handleSendMessage = async () => {
+    if (newMessage.trim() !== "") {
+      const userMessage = { text: newMessage, isUser: true };
+      setMessages((prevMessages) => [...prevMessages, userMessage]);
+      setNewMessage(""); // Clear input field
+      setIsLoading(true); // Show loading state
+      try {
+        const botResponse = await fetchBotResponse(newMessage);
+        setMessages((prevMessages) => [...prevMessages, { text: botResponse, isUser: false }]);
+      } catch (error) {
+        console.error("Chouf Tv:", error);
+        setMessages((prevMessages) => [...prevMessages, { text: "Chouf Tv.", isUser: false }]);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
+  // API
+  const fetchBotResponse = async (userInput: string) => {
+    const response = await fetch("", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ message: userInput }),
+    });
+
+    const data = await response.json();
+    return data.reply || "I couldn't understand that. Try asking something else!";
+  };
+
   return (
-    <div className=" min-h-96 w-100 flex  justify-end flex-col">
-      
-      <div className="">
-        {/* Display messages */}
+    <div className="min-h-96 w-full flex flex-col items-center justify-end gap-5">
+      <div className="w-[84%] flex flex-col gap-2 items-center justify-center">
         {messages.map((message, index) => (
-          <div key={index} className="chat-message">
-            <p>{message}</p>
+          <div
+            key={index}
+            className={`w-[100%] p-2 border-black border shadow-[2px_2px_0px_rgba(0,0,0,1)]  ${
+              message.isUser ? "bg-[#F5E6CF ] self-end" : "bg-gray-200 self-start"
+            }`}
+          >
+            <p className={message.isUser ? "text-right" : "text-left"}>
+              {message.isUser ? "You: " : "Journalist: "} {message.text}
+            </p>
           </div>
         ))}
+        {isLoading && <p className="text-gray-500 italic"> Journalist is typing...</p>}
       </div>
-
-      <div className="chat-input w-[100%] h-[10%] flex gap-5">
+      <div className="w-full h-[10%] flex gap-5 items-center justify-center">
         <input
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Type a message"
-          className="w-[90%] h-[100%] p-2"
+          placeholder="Type a message..."
+          className="w-[70%] p-2 border border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] "
         />
-        <button onClick={handleSendMessage}>Send</button>
+        <button
+          className="border border-black  h-[100%] w-[10%] shadow-[2px_2px_0px_rgba(0,0,0,1)]"
+          onClick={handleSendMessage}
+          disabled={isLoading} // Disable button when bot is responding
+        >
+          {isLoading ? "..." : "Send"}
+        </button>
       </div>
     </div>
   );
-}
+};
 
 function NewsFieldsPage() {
 
@@ -110,8 +146,8 @@ function NewsFieldsPage() {
                 </div>
           </>
         ) : (
-          <div className="w-[100%] flex flex-col">
-          <button onClick={() => handleBacktoField()} className="border-black w-20 border-2 px-4 py-2  bg-white">
+          <div className="w-[100%] flex flex-col items-end ">
+          <button onClick={() => handleBacktoField()} className="border-black w-20 border-2 px-4 py-2  bg-white shadow-[2px_2px_0px_rgba(0,0,0,1)]">
                     Back
             </button>
             <ChatSection/>
