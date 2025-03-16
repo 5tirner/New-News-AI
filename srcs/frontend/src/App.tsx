@@ -1,16 +1,20 @@
-import AppRouter from './routes/AppRouter';
-import Navbar from './components/Navbar';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import AppRouter from "./routes/AppRouter";
+import Navbar from "./components/Navbar";
+import { AuthProvider } from "./context/AuthContext";
+import { AlertProvider } from "./context/AlertContext";
+import AlertPopup from "./components/alert";
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-900">
-      <Navbar />
+    <AlertProvider>
       <AuthProvider>
+        <div className="min-h-screen bg-gray-100 text-gray-900">
+          <Navbar />
           <AppRouter />
+          <AlertPopup />
+        </div>
       </AuthProvider>
-    </div>
+    </AlertProvider>
   );
 }
 
