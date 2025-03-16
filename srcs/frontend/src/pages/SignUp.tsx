@@ -47,8 +47,8 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
-      <div className="w-full max-w-md bg-white p-6 rounded-2xl shadow-lg">
+    <div className="flex min-h-screen items-center justify-center bg-[#f6f2e7] p-4">
+      <div className="w-full max-w-md bg-[#F5E6CF] p-6 border border-[#DDBD8A] rounded-2xl shadow-lg">
         <h2 className="text-2xl font-semibold text-center mb-6">Sign Up</h2>
         
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -58,7 +58,7 @@ const SignUp = () => {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full mt-1 p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 p-2 border border-gray-300 bg-[#f6f2e7] rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
@@ -69,7 +69,7 @@ const SignUp = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full mt-1 p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 p-2 border border-gray-300 bg-[#f6f2e7] rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>

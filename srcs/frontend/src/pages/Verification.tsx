@@ -48,8 +48,8 @@ const Verification = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
-      <div className="w-full max-w-md bg-white p-6 rounded-2xl shadow-lg">
+    <div className="flex min-h-screen items-center justify-center bg-[#f6f2e7] p-4">
+      <div className="w-full max-w-md bg-[#F5E6CF] p-6 border border-[#DDBD8A] rounded-2xl shadow-lg">
         <h2 className="text-2xl font-semibold text-center mb-4">Email Verification</h2>
         <p className="text-gray-600 text-center mb-6">
           Enter the verification code sent to your email to complete your signup.
@@ -62,7 +62,7 @@ const Verification = () => {
               type="text"
               value={code}
               onChange={(e) => setCode(e.target.value)} // Convert to uppercase  .toUpperCase()
-              className="w-full mt-1 p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-lg tracking-widest"
+              className="w-full mt-1 p-2 border border-gray-300 bg-[#f6f2e7] rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-lg tracking-widest"
               maxLength={8}
               required
             />
