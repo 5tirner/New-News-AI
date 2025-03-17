@@ -7,8 +7,7 @@ const Navbar = () => {
       <div className="container flex justify-between text-white">
         <h1 className="text-xl font-bold text-black">Journalist</h1>
         <div className="space-x-4">
-          <Link to="/home" className=" text-black">Home</Link>
-          <Link to="/news" className=" text-black">News</Link>
+          <Link to="/home" className="font-bold text-black">Home</Link>
         </div>
         <div className="space-x-4 flex ">
         <IoIosNotifications size={30} color="red"/>

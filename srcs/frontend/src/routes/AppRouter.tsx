@@ -7,8 +7,13 @@ import ProtectedLogin from "./ProtectedFirstPage";
 import Verification from "../pages/Verification";
 import FirstPage from "../pages/FirstPage";
 import NewsPage from "../pages/newsPage";
+import FieldSection from "../pages/FieldPage";
+import { useState } from "react";
+
 
 const AppRouter = () => {
+  const [isField, setField] = useState([]);
+
   return (
       <Routes>
 
@@ -31,6 +36,7 @@ const AppRouter = () => {
         <Route path="/" element={<FirstPage/>} />
         <Route path="/home" element={< Home/>} /> 
         <Route path="/news" element={< NewsPage/>} />
+        <Route path="/Field" element={< FieldSection setField={setField , isField} />} />
 
        
 
