@@ -15,6 +15,20 @@ import os, dotenv
 
 dotenv.load_dotenv()
 
+#Twitter COOKIES
+# CFBM = os.getenv('__cf_bm')
+# TWITTER_SESS = os.getenv('_twitter_sess')
+AUTH_TOKEN = os.getenv('AUTH_TOKEN')
+CT0 = os.getenv('CT0')
+# GT = os.getenv('gt')
+# GUEST_ID = os.getenv('guest_id')
+# GUEST_ID_ADS = os.getenv('guest_id_ads')
+# GUEST_ID_MARKETING = os.getenv('guest_id_marketing')
+# KDT = os.getenv('kdt')
+# LANG = os.getenv('lang')
+# PESR_ID = os.getenv('personalization_id')
+# TWID = os.getenv('twid')
+
 #News Apis
 NEWS_API = os.getenv('NEWS_API')
 NEWS_URL = os.getenv('NEWS_URL')
