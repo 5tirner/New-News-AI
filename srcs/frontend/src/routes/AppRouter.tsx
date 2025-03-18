@@ -24,7 +24,9 @@ const AppRouter = () => {
         <Route path="/" element={<ProtectedLogin><FirstPage/></ProtectedLogin>} />
 
         <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-        <Route path="/news" element={<ProtectedRoute><NewsPage /></ProtectedRoute>} /> */}
+        <Route path="/news" element={<ProtectedRoute><NewsPage /></ProtectedRoute>} /> 
+        <Route path="/Field" element={<ProtectedRoute>< FieldSection setField={setField , isField} /></ProtectedRoute>} /> */}
+       
 
 
 

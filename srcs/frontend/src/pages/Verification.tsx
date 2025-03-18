@@ -68,15 +68,6 @@ const Verification = () => {
               <input maxLength={1} className="bg-gray-200 w-10 h-10 border border-black flex text-center" type="text" placeholder="" required />
               <input maxLength={1} className="bg-gray-200 w-10 h-10 border border-black flex text-center" type="text" placeholder="" required />
             </div>
-
-            {/* <input
-              type="text"
-              value={code}
-              onChange={(e) => setCode(e.target.value)} // Convert to uppercase  .toUpperCase()
-              className="w-full mt-1 p-2 border border-gray-300 bg-[#f6f2e7] rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-lg tracking-widest"
-              maxLength={8}
-              required
-            /> */}
           </div>
 
           <button
@@ -87,9 +78,9 @@ const Verification = () => {
           </button>
         </form>
 
-        <p className="text-center text-sm text-gray-600 mt-4">
-          Didn't receive a code? <a href="/resend-code" className="text-blue-500">Resend Code</a>
-        </p>
+        {/* <p className="text-center text-sm text-gray-600 mt-4"> */}
+          {/* Didn't receive a code? <a href="/resend-code" className="text-blue-500">Resend Code</a> */}
+        {/* </p> */}
       </div>
     </div>
   );

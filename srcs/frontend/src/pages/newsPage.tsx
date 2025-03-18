@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import {useNavigate } from "react-router-dom";
-import ChatSection from "./ChatSection";
 
 const NewsPage = ({setIsFirstVisible}) => {
   const navigate = useNavigate();
@@ -34,11 +33,11 @@ const NewsPage = ({setIsFirstVisible}) => {
         </div>
 
         {/* News Cards */}
-        <div className="mt-8 flex flex-col gap-6 items-center">
+        <div className="mt-8 flex flex-wrap gap-6 items-center justify-center">
           {newsData.map((news, index) => (
             <div
               key={index}
-              className="w-[80%] md:w-[60%] p-4 border-2 border-black  shadow-[4px_4px_0px_rgba(0,0,0,1)] text-left"
+              className="w-[80%] md:w-[60%] p-4 border-2 border-black bg-white shadow-[4px_4px_0px_rgba(0,0,0,1)] text-left"
             >
               <h3 className="font-bold ">{news.title}</h3>
               <p className="text-sm mt-1">{news.content}</p>
