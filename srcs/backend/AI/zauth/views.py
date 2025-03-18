@@ -1,6 +1,6 @@
 from rest_framework import status, response, decorators
 from .serialz import auth_db_serial, tokens_db_serial, verify_serializer
-from .models import auth_db, tokens_db, verificationSystem
+from .models import auth_db, tokens_db, verificationSystem, userFields
 from django.core import mail
 from django.conf import settings
 from .isStrong import validate_passwd
@@ -126,3 +126,30 @@ def profile_data(req):
     infos = auth_db.objects.get(email=user_data.identity)
     return response.Response({'Email': infos.email,'Activation': infos.activation},
                              status=status.HTTP_200_OK)
+
+@decorators.api_view(['POST'])
+def storeUserFileds(req):
+    try:
+        user_data = is_auth_user(req.headers.get('Access-Token'), req.headers.get('Refresh-Token'))
+    except Exception as error:
+        return response.Response({'Authentication': 'Permission Needed'},
+                                 status=status.HTTP_404_NOT_FOUND)
+    data = req.data.get('fields')
+    if data is None:
+        return response.Response({'fields': 'Required Field'}, status=status.HTTP_400_BAD_REQUEST)
+    getUserFields = userFields.objects.create(identity=user_data.identity)
+    allowedFields = ['football', 'ai', 'crypto', 'it', 'politic', 'cybersec']
+    fields = {}
+    for field in data:
+        if field in allowedFields:
+            fields[field] = True
+        else:
+            return response.Response({'allowed fields': allowedFields}, status=status.HTTP_400_BAD_REQUEST)
+    print(fields)
+    try:
+        getUserFields.fields = fields
+        getUserFields.save()
+    except Exception as e:
+        print("Eroor: ", e)
+        return response.Response({'Sorry': 'Something Wierd Happen'}, status=status.HTTP_504_GATEWAY_TIMEOUT)
+    return response.Response({'fields': 'added succeful'}, status=status.HTTP_200_OK)

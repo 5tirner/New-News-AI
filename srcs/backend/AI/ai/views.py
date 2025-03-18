@@ -48,4 +48,3 @@ def get_convertation(req):
     if conv is None:
         return response.Response({'conversation_id': 'Not Found'}, status=status.HTTP_400_BAD_REQUEST)
     return response.Response(conv, status=status.HTTP_200_OK)
-

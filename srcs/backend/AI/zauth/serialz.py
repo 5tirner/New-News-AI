@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from .models import auth_db, tokens_db, verificationSystem
+from .models import auth_db, tokens_db, verificationSystem, userFields
 
 class auth_db_serial(ModelSerializer):
     class Meta:

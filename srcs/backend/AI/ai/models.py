@@ -4,7 +4,3 @@ from jsonfield import JSONField
 class conversations(models.Model):
     identity = models.EmailField(unique=True, null=False, primary_key=True)
     topics = JSONField()
-
-class userFields(models.Model):
-    identity = models.EmailField(unique=True, null=False, primary_key=True)
-    fields = JSONField()
