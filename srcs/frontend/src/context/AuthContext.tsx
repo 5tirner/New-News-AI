@@ -13,7 +13,6 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const API_URL = '/auth/api/profile';
-const WS_URL = '/livenews/';
 
 // AuthProvider Component
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -51,17 +50,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = () => {
     showAlert("Login successful! Welcome back.", "success");
     setIsAuthenticated(true);
-    let socket = new WebSocket(WS_URL);
-
-    socket.onopen = () => {
-      console.log("websocket is connecting ...");
-    };
-    socket.onmessage = (e) => {
-      console.log("recieved message :"+e);
-    };
-    socket.onclose = (e) => {
-      console.log("websocket closed!")
-    };
   };
 
   const logout = () => {

@@ -59,7 +59,7 @@ const Verification = () => {
             <label className="block text-sm font-medium text-gray-700">Verification Code</label>
             <div className="flex items-center gap-2 ">
 
-              <input maxLength={1} className="bg-gray-200 w-10 h-10 border border-black flex text-center" type="text" placeholder="" required />
+              <input maxLength={8} className="bg-gray-200 w-10 h-10 border border-black flex text-center" type="text" placeholder="" required />
               <input maxLength={1} className="bg-gray-200 w-10 h-10 border border-black flex text-center" type="text" placeholder="" required />
               <input maxLength={1} className="bg-gray-200 w-10 h-10 border border-black flex text-center" type="text" placeholder="" required />
               <input maxLength={1} className="bg-gray-200 w-10 h-10 border border-black flex text-center" type="text" placeholder="" required />
@@ -78,9 +78,9 @@ const Verification = () => {
           </button>
         </form>
 
-        {/* <p className="text-center text-sm text-gray-600 mt-4"> */}
-          {/* Didn't receive a code? <a href="/resend-code" className="text-blue-500">Resend Code</a> */}
-        {/* </p> */}
+        <p className="text-center text-sm text-gray-600 mt-4">
+          Didn't receive a code? <a href="/resend-code" className="text-blue-500">Resend Code</a>
+        </p>
       </div>
     </div>
   );

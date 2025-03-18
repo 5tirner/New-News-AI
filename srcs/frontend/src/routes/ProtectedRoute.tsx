@@ -3,6 +3,9 @@ import { useAuth } from "../context/AuthContext";
 import { useAlert } from "../context/AlertContext";
 import { useEffect } from "react";
 
+const WS_URL = '/livenews/';
+
+
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const { isAuthenticated } = useAuth();
   const { showAlert } = useAlert();
@@ -13,8 +16,21 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
     }
   }, [isAuthenticated]);
 
-  if (isAuthenticated) return children;
-  
+  if (isAuthenticated){
+
+    let socket = new WebSocket(WS_URL);
+    
+    socket.onopen = () => {
+      console.log("websocket is connecting ...");
+    };
+    socket.onmessage = (e) => {
+      console.log("recieved message :"+e);
+    };
+    socket.onclose = (e) => {
+      console.log("websocket closed!")
+    };
+    return children; 
+  }
   return <Navigate to="/login" replace />;
 };
 
