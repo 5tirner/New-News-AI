@@ -47,8 +47,8 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#f6f2e7] p-4">
-      <div className="w-full max-w-md bg-[#F5E6CF] p-6 border border-[#DDBD8A] rounded-2xl shadow-lg">
+    <div className="flex min-h-screen items-center justify-center bg-[#fdfbee] p-4">
+      <div className="w-full max-w-md bg-white p-6  shadow-[4px_4px_0px_rgba(0,0,0,1)] border border-black ">
         <h2 className="text-2xl font-semibold text-center mb-6">Sign Up</h2>
         
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -58,7 +58,7 @@ const SignUp = () => {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full mt-1 p-2 border border-gray-300 bg-[#f6f2e7] rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 p-2 border border-gray-300  border-2 border-black  shadow-[4px_4px_0px_rgba(0,0,0,1)] focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
@@ -69,7 +69,7 @@ const SignUp = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full mt-1 p-2 border border-gray-300 bg-[#f6f2e7] rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 p-2 border border-gray-300 border-2 border-black  shadow-[4px_4px_0px_rgba(0,0,0,1)] focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
@@ -80,7 +80,7 @@ const SignUp = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full mt-1 p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 p-2 border-2 border-black  shadow-[4px_4px_0px_rgba(0,0,0,1)] focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
@@ -91,22 +91,22 @@ const SignUp = () => {
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full mt-1 p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 p-2 border-2 border-black  shadow-[4px_4px_0px_rgba(0,0,0,1)] focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-xl hover:bg-blue-600 transition"
+            className="w-full bg-gray-500 text-white py-2 border-2 border-black  shadow-[4px_4px_0px_rgba(0,0,0,1)] transition"
           >
             Sign Up
           </button>
         </form>
 
         <div className="text-center mt-4">
-          <button className="w-full flex items-center justify-center gap-2 bg-red-500 text-white py-2 rounded-xl hover:bg-red-600 transition">
-          <img src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA" alt="Google Logo" className="w-5 h-5" /> Sign Up with Google
+          <button className="w-full flex items-center justify-center gap-2 bg-white-500 text-black py-2 border-2 border-black  shadow-[4px_4px_0px_rgba(0,0,0,1)] transition">
+          <img src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA" alt="Google Logo" className="w-5 h-5 " /> Sign Up with Google
           </button>
         </div>
 

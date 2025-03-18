@@ -16,7 +16,7 @@ const NewsPage = () => {
 
     
   return (
-    <div className="bg-[#fdfbee] min-h-screen">
+    <div className="  min-h-screen">
  
       {/* Main Section */}
       <main className="p-10 text-center">
@@ -35,7 +35,7 @@ const NewsPage = () => {
           {newsData.map((news, index) => (
             <div
               key={index}
-              className="w-[80%] md:w-[60%] border-2 border-black p-4 shadow-[4px_4px_0px_rgba(0,0,0,1)] text-left"
+              className="w-[80%] md:w-[60%] p-4 border-2 border-black  shadow-[4px_4px_0px_rgba(0,0,0,1)] text-left"
             >
               <h3 className="font-bold ">{news.title}</h3>
               <p className="text-sm mt-1">{news.content}</p>
