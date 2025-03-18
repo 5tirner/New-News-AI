@@ -76,9 +76,9 @@ const Verification = () => {
           </button>
         </form>
 
-        <p className="text-center text-sm text-gray-600 mt-4">
-          Didn't receive a code? <a href="/resend-code" className="text-blue-500">Resend Code</a>
-        </p>
+        {/* <p className="text-center text-sm text-gray-600 mt-4"> */}
+          {/* Didn't receive a code? <a href="/resend-code" className="text-blue-500">Resend Code</a> */}
+        {/* </p> */}
       </div>
     </div>
   );
