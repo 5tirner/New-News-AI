@@ -14,3 +14,7 @@ class tokens_db(models.Model):
 class verificationSystem(models.Model):
     identity = models.EmailField(unique=True, null=False, primary_key=True)
     ActivationCode = models.CharField(max_length=8,null=False)
+
+class userFields(models.Model):
+    identity = models.EmailField(unique=True, null=False, primary_key=True)
+    fields = JSONField()

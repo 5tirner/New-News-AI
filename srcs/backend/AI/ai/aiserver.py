@@ -65,7 +65,9 @@ async def get_tweets(searchFor, cookies):
             'username': tweet.user.screen_name,
             'likes': tweet.favorite_count,
             'created_at': tweet_time,
-            'real_time': tweet.created_at
+            'real_time': tweet.created_at,
+            'conversation_id': ''.join(random.choices(string.ascii_uppercase+string.digits, k=10))
+
         })
     AllTweets.sort(key=lambda x: x['created_at'], reverse=True)
     if len(AllTweets) > 0:
