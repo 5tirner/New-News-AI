@@ -3,15 +3,15 @@
 import { useNavigate } from "react-router-dom";
 
 
-const FieldSection = ({setField , isField}) => {
+const FieldSection = () => {
 
     const navigate = useNavigate();
 
     const handleFieldSelection = (field) => {
-        if (!isField.includes(field)) {
-            setField(field);
-            console.log('chose your filed' + field);
-        }
+        // if (!isField.includes(field)) {
+        //     setField(field);
+        //     console.log('chose your filed' + field);
+        // }
         navigate('/home')
     };
     return (

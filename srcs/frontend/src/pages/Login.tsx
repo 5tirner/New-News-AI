@@ -7,8 +7,8 @@ const API_URL = `/auth/api/signin`;
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
-  const { showAlert } = useAlert();
+  // const { login } = useAuth();
+  // const { showAlert } = useAlert();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -16,41 +16,42 @@ const Login = () => {
     e.preventDefault();
     navigate('/Field');
     console.log("Logging in with", { email, password });
+  // }
 
     // Add login logic here
-    try {
+  //   try {
 
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          'email':email,
-          'password':password
-        })
-      });
+  //     const response = await fetch(API_URL, {
+  //       method: 'POST',
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         'email':email,
+  //         'password':password
+  //       })
+  //     });
 
-      if (!response.ok)
-        throw new Error(`Response status : ${response.status}`);
+  //     if (!response.ok)
+  //       throw new Error(`Response status : ${response.status}`);
 
-      const json = await response.json();
-      document.cookie = `Access-Token=${json["Access-Token"]}`;
-      document.cookie = `Refresh-Token=${json["Refresh-Token"]}`;
+  //     const json = await response.json();
+  //     document.cookie = `Access-Token=${json["Access-Token"]}`;
+  //     document.cookie = `Refresh-Token=${json["Refresh-Token"]}`;
 
-      // localStorage.setItem("Access-Token", json["Access-Token"]);
-      // localStorage.setItem("Refresh-Token", json["Refresh-Token"]);
-      login();
-      console.log(json);
+  //     // localStorage.setItem("Access-Token", json["Access-Token"]);
+  //     // localStorage.setItem("Refresh-Token", json["Refresh-Token"]);
+  //     login();
+  //     console.log(json);
 
-    } catch (error) {
-      try{
-        showAlert("Invalid email or password. Please try again.", "error");
-      }catch (e) {
-        console.log(e.message);
-      }
-      console.error("catch the Error here : "+error.message);
-    }
+  //   } catch (error) {
+  //     try{
+  //       showAlert("Invalid email or password. Please try again.", "error");
+  //     }catch (e) {
+  //       console.log(e.message);
+  //     }
+  //     console.error("catch the Error here : "+error.message);
+  //   }
   };
 
   return (

@@ -1,6 +1,10 @@
 import { useState } from "react";
 
-const NewsPage = () => {
+import {useNavigate } from "react-router-dom";
+import ChatSection from "./ChatSection";
+
+const NewsPage = ({setIsFirstVisible}) => {
+  const navigate = useNavigate();
   const newsData = [
     {
       title: "Real Madrid won UCL again",
@@ -14,7 +18,6 @@ const NewsPage = () => {
     },
   ];
 
-    
   return (
     <div className="  min-h-screen">
  
@@ -39,7 +42,7 @@ const NewsPage = () => {
             >
               <h3 className="font-bold ">{news.title}</h3>
               <p className="text-sm mt-1">{news.content}</p>
-              <button className="mt-4 border-2 border-black px-4 py-2 bg-gray-700 text-white shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+              <button onClick={() => setIsFirstVisible(false)} className="mt-4 border-2 border-black px-4 py-2 bg-gray-700 text-white shadow-[2px_2px_0px_rgba(0,0,0,1)]">
                 Talk to Journalist!
               </button>
             </div>

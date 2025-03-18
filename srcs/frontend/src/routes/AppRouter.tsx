@@ -9,10 +9,11 @@ import FirstPage from "../pages/FirstPage";
 import NewsPage from "../pages/newsPage";
 import FieldSection from "../pages/FieldPage";
 import { useState } from "react";
+import ChatSection  from "../pages/ChatSection";
 
 
 const AppRouter = () => {
-  const [isField, setField] = useState([]);
+  // const [isField, setField] = useState([]);
 
   return (
       <Routes>
@@ -35,8 +36,9 @@ const AppRouter = () => {
         <Route path="/verify" element={<Verification/>} />
         <Route path="/" element={<FirstPage/>} />
         <Route path="/home" element={< Home/>} /> 
-        <Route path="/news" element={< NewsPage/>} />
-        {/* <Route path="/Field" element={< FieldSection setField={setField , isField} />} /> */}
+        <Route path="/news" element={< NewsPage setIsFirstVisible={undefined} />} />
+        <Route path="/Journalist" element={ <ChatSection setIsFirstVisible={undefined} />} />
+        <Route path="/Field" element={< FieldSection  />} />
 
        
 
