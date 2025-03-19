@@ -8,6 +8,8 @@ services:
       - net
     env_file:
       - ./.env
+    volumes:
+      - /home/zasabri/Desktop/newNews/srcs/backend/AI/ai/views.py:/work/ai/views.py
 
   frontend:
     container_name: frontend

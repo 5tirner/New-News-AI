@@ -29,6 +29,10 @@ CT0 = os.getenv('CT0')
 # PESR_ID = os.getenv('personalization_id')
 # TWID = os.getenv('twid')
 
+#GOOGLE SEARCH
+SEARCH_URL = os.getenv('SEARCH_URL')
+SEARCH_ENGINE_ID=os.getenv('SEARCH_ENGINE_ID')
+SEARCH_API_KEY=os.getenv('SEARCH_API_KEY')
 #News Apis
 NEWS_API = os.getenv('NEWS_API')
 NEWS_URL = os.getenv('NEWS_URL')

@@ -2,7 +2,7 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useAlert } from "../context/AlertContext";
 import { useEffect, useRef } from "react";
-import { useNews } from "../context/newsContext"; // Use context instead of hooks directory
+import { useNews } from "../context/newsContext";
 
 const WS_URL = "/livenews/";
 
@@ -10,7 +10,7 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const { isAuthenticated } = useAuth();
   const { showAlert } = useAlert();
   const { news, addNews } = useNews();
-  const socketRef = useRef<WebSocket | null>(null); // ✅ Keep WebSocket reference
+  const socketRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -18,7 +18,7 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
       return;
     }
 
-    // ✅ Open WebSocket only once
+    // Open WebSocket only once
     socketRef.current = new WebSocket(WS_URL);
 
     socketRef.current.onopen = () => {
@@ -57,13 +57,12 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
       console.error("WebSocket Error:", error);
     };
 
-    // ✅ Cleanup function to close WebSocket
     return () => {
       if (socketRef.current) {
         socketRef.current.close();
       }
     };
-  }, [isAuthenticated]); // ✅ Depend only on `isAuthenticated`
+  }, [isAuthenticated]);
 
   useEffect(() => {
     console.log("All News :", news);

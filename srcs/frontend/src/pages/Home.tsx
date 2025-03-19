@@ -3,6 +3,11 @@ import { useState , useEffect} from "react";
 // import FieldSection from "./FieldPage";
 import NewsPage from "./newsPage";
 import ChatSection from "./ChatSection";
+import { TbLayoutNavbarCollapseFilled } from "react-icons/tb";
+import { TbLayoutNavbarExpandFilled } from "react-icons/tb";
+
+
+
 
 
 
@@ -32,14 +37,14 @@ function NewsFieldsPage() {
     <div className="flex h-screen bg-[#fdfbee]">
       {/* Sidebar */}
       <div
-        className={`${isSidebarOpen ? "w-64" : "w-16"
-          } bg-[#F5E6CF] transition-all duration-300 p-4 flex flex-col`}
+        className={`${isSidebarOpen ? "w-64 bg-[#F5E6CF]" : "w-1 bg-[#fdfbee]"
+          }  transition-all duration-300 p-4 flex flex-col`}
       >
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           className=" text-white p-2 rounded text-right"
         >
-          {isSidebarOpen ? "⬅" : "➡"}
+          {isSidebarOpen ? <TbLayoutNavbarCollapseFilled style = {{transform: 'rotate(-90deg)' }} size={30} color="gray" /> : <TbLayoutNavbarExpandFilled style = {{transform: 'rotate(-90deg)' }} size={30} color="gray" />}
         </button>
 
         {isSidebarOpen && (

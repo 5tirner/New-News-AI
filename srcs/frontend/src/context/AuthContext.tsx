@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 import { getCookie } from "../utils/getCoockie";
 import { useAlert } from "./AlertContext";
+import { useNavigate } from "react-router-dom";
 
 // Define types for AuthContext
 interface AuthContextType {
@@ -16,6 +17,7 @@ const API_URL = '/auth/api/profile';
 
 // AuthProvider Component
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const navigate = useNavigate();
   const {showAlert} = useAlert();
   let Access = getCookie("Access-Token");
   let Refresh = getCookie("Refresh-Token");
@@ -37,7 +39,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
       const json = await response.json();
       if (!response.ok)
-        throw new Error("from backend : " + json);
+        throw new Error(json);
       setIsAuthenticated(true);
     } catch(e) {
       setIsAuthenticated(false);
@@ -57,6 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsAuthenticated(false);
     document.cookie = "Access-Token="; // Remove token
     document.cookie = "Refresh-Token="; // Remove token
+    navigate("/");
   };
 
   return (

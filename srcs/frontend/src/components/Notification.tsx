@@ -13,9 +13,10 @@ const Notification = () => {
         if (news.length > 0) {
             setHasNewNotification(true);
         }
+        else
+            setHasNewNotification(false);
     }, [news]);
 
-    // Close popover when clicking outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (popoverRef.current && !popoverRef.current.contains(event.target as Node)) {
@@ -41,16 +42,16 @@ const Notification = () => {
                 className="relative cursor-pointer"
                 onClick={() => {
                     setIsNotificationVisible(!isNotificationVisible);
-                    setHasNewNotification(false); // Remove red dot after clicking
+                    setHasNewNotification(false); 
                 }}
             >
                 <IoIosNotifications size={30} color="gray" />
                 
                 {/* Red dot for new notifications */}
                 {hasNewNotification && (
-                    <span className="absolute top-0 right-0 flex h-2 w-2">
-                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-300 opacity-75"></span>
-                        <span className="relative inline-flex h-2 w-2 rounded-full bg-red-600"></span>
+                    <span className="absolute top-0 right-0 flex item-center justify-conter h-2 w-2">
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
+                        <span className="relative -top-1 inline-flex h-2 w-2 font-bold text-sm rounded-full text-red-600">{news.length < 99 ? news.length : +99}</span>
                     </span>
                 )}
             </div>

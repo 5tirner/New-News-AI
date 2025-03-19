@@ -17,11 +17,11 @@ export const NewsProvider = ({ children }: { children: React.ReactNode }) => {
   const [news, setNews] = useState<NewsItem[]>([]);
 
   const addNews = (newItem: NewsItem) => {
-    setNews((prevNews) => [newItem, ...prevNews]); // ✅ Add new news at the top
+    setNews((prevNews) => [newItem, ...prevNews]); 
   };
 
   const removeNews = (index: number) => {
-    setNews((prevNews) => prevNews.filter((_, i) => i !== index)); // ✅ Remove by index
+    setNews((prevNews) => prevNews.filter((_, i) => i !== index)); 
   };
 
   return (
