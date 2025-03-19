@@ -17,23 +17,24 @@ const FieldSection = () => {
 
     const handleSubmit = async () => {
         console.log(JSON.stringify({ fields: selectedFields }))
-        navigate("/home");
+        // navigate("/home");
 
-        // try {
-        //     const response = await fetch("", {
-        //         method: "POST",
-        //         headers: { "Content-Type": "application/json" },
-        //         body: JSON.stringify({ fields: selectedFields })
-        //     });
-        //     if (response.ok) {
-        //         console.log("Fields submitted successfully");
-        //         navigate("/home");
-        //     } else {
-        //         console.error("Failed to submit fields");
-        //     }
-        // } catch (error) {
-        //     console.error("Error submitting fields:", error);
-        // }
+        try {
+            const response = await fetch("/auth/api/fields", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: 'include',
+                body: JSON.stringify({ fields: selectedFields })
+            });
+            if (response.ok) {
+                console.log("Fields submitted successfully");
+                navigate("/home");
+            } else {
+                console.error("Failed to submit fields");
+            }
+        } catch (error) {
+            console.error("Error submitting fields:", error);
+        }
     };
 
     return (
@@ -41,7 +42,7 @@ const FieldSection = () => {
             <div className="flex flex-col w-100 h-80 border border-black p-5 shadow-[2px_2px_0px_rgba(0,0,0,1)] justify-center bg-white">
                 <h1 className="text-xl font-bold text-center">Choose Your News Fields</h1>
                 <div className="flex flex-wrap gap-4 mt-4">
-                    {["Football", "It", "Cybersec", "Crypto" , "Ia"].map((field) => (
+                    {["football", "it",'politic', "cybersec", "Crypto" , "ai"].map((field) => (
                         <button
                             key={field}
                             onClick={() => handleFieldSelection(field)}

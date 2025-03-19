@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState , useEffect} from "react";
 // import FieldSection from "./FieldPage";
 import NewsPage from "./newsPage";
 import ChatSection from "./ChatSection";
@@ -13,6 +13,21 @@ function NewsFieldsPage() {
   const [isField, setField] = useState([]);
 
   const [isFirstVisible, setIsFirstVisible] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("fields"); // Replace with your API URL
+        const data = await response.json();
+        setField(data.fields); // Assuming data has a 'fields' array
+        console.log("this is list of field" + data.fields)
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []); // Empty dependency array ensures it runs only once
   return (
     <div className="flex h-screen bg-[#fdfbee]">
       {/* Sidebar */}
@@ -31,9 +46,9 @@ function NewsFieldsPage() {
           <>
             <h2 className="font-bold mt-4">Fields</h2>
             <ul>
-              {/* {isField.map((field, index) => (
+              {isField.map((field, index) => (
                 <li key={index} className="mt-2">⚫ {field}</li>
-              ))} */}
+              ))}
             </ul>
             <h2 className="font-bold mt-4">History</h2>
             <div className="mt-2 bg-gray-400 h-8 w-full rounded"></div>
