@@ -130,14 +130,17 @@ def profile_data(req):
 @decorators.api_view(['POST'])
 def storeUserFileds(req):
     try:
-        user_data = is_auth_user(req.headers.get('Access-Token'), req.headers.get('Refresh-Token'))
+        user_data = is_auth_user(req.COOKIES.get('Access-Token'), req.COOKIES.get('Refresh-Token'))
     except Exception as error:
         return response.Response({'Authentication': 'Permission Needed'},
                                  status=status.HTTP_404_NOT_FOUND)
     data = req.data.get('fields')
     if data is None:
         return response.Response({'fields': 'Required Field'}, status=status.HTTP_400_BAD_REQUEST)
-    getUserFields = userFields.objects.create(identity=user_data.identity)
+    try:
+        getUserFields = userFields.objects.create(identity=user_data.identity)
+    except:
+        getUserFields = userFields.objects.get(identity=user_data.identity)
     allowedFields = ['football', 'ai', 'crypto', 'it', 'politic', 'cybersec']
     fields = {}
     for field in data:
