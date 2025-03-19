@@ -137,7 +137,10 @@ def storeUserFileds(req):
     data = req.data.get('fields')
     if data is None:
         return response.Response({'fields': 'Required Field'}, status=status.HTTP_400_BAD_REQUEST)
-    getUserFields = userFields.objects.create(identity=user_data.identity)
+    try:
+        getUserFields = userFields.objects.create(identity=user_data.identity)
+    except:
+        getUserFields = userFields.objects.get(identity=user_data.identity)
     allowedFields = ['football', 'ai', 'crypto', 'it', 'politic', 'cybersec']
     fields = {}
     for field in data:

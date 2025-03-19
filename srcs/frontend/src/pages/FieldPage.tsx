@@ -42,7 +42,7 @@ const FieldSection = () => {
             <div className="flex flex-col w-100 h-80 border border-black p-5 shadow-[2px_2px_0px_rgba(0,0,0,1)] justify-center bg-white">
                 <h1 className="text-xl font-bold text-center">Choose Your News Fields</h1>
                 <div className="flex flex-wrap gap-4 mt-4">
-                    {["football", "it",'politic', "cybersec", "Crypto" , "ai"].map((field) => (
+                    {["football", "it",'politic', "cybersec", "crypto" , "ai"].map((field) => (
                         <button
                             key={field}
                             onClick={() => handleFieldSelection(field)}

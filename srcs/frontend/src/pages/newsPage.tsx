@@ -11,7 +11,7 @@ const NewsPage = ({ setIsFirstVisible }: { setIsFirstVisible: (visible: boolean)
         <p className="text-gray-600 mt-2">What’s new?</p>
 
         {/* News Cards */}
-        <div className="overflow-y-auto mt-8 flex flex-wrap gap-6 items-center justify-center">
+        <div className="w-[100%] min-h-96 mt-8 flex flex-wrap gap-6 items-center justify-center border-2 border-black ">
           {news.length > 0 ? (
             news.map((newsItem, index) => (
               <div

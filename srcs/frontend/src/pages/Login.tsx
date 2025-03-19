@@ -3,13 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useAlert } from "../context/AlertContext";
 
-import  FieldSection  from "../pages/FieldPage";
+// import  FieldSection  from "../pages/FieldPage";
 
 const API_URL = `/auth/api/signin`;
 
 const Login = () => {
   const navigate = useNavigate();
-  const field = FieldSection();
+  // const field = FieldSection();
   const { login } = useAuth();
   const { showAlert } = useAlert();
   const [email, setEmail] = useState("");
@@ -42,9 +42,9 @@ const Login = () => {
       // localStorage.setItem("Access-Token", json["Access-Token"]);
       // localStorage.setItem("Refresh-Token", json["Refresh-Token"]);
       login();
-      field();
+      // field();
 
-      // navigate('/Field')
+      navigate('/Field')
       console.log(json);
 
     } catch (error) {
