@@ -92,7 +92,6 @@ async def get_google_news(params, newsurl):
             newsUrl = article['url']
             newsImage = article['urlToImage']
             publishDate = article['publishedAt']
-            # print(f"The New Article is: {article}")
             if author is None or newsUrl is None or source is None:
                 print("Not Trusted")
             print(f"News Source: {source}\nDate: {publishDate}\nUrl: {newsUrl}\nImage: {newsImage}\nTitle: {title}\nSubject: {subj}")
