@@ -58,15 +58,15 @@ const Verification = () => {
           <div className="flex items-center justify-center flex-col gap-3">
             <label className="block text-sm font-medium text-gray-700">Verification Code</label>
             <div className="flex items-center gap-2 ">
-
-              <input maxLength={8} className="bg-gray-200 w-10 h-10 border border-black flex text-center" type="text" placeholder="" required />
+              <input maxLength={8} value={code} className="bg-gray-200 w-full h-10 border border-black flex text-center" onChange={(e) => setCode(e.target.value)} type="text" required />
+              {/* <input maxLength={1} className="bg-gray-200 w-10 h-10 border border-black flex text-center" type="text" placeholder="" required />
               <input maxLength={1} className="bg-gray-200 w-10 h-10 border border-black flex text-center" type="text" placeholder="" required />
               <input maxLength={1} className="bg-gray-200 w-10 h-10 border border-black flex text-center" type="text" placeholder="" required />
               <input maxLength={1} className="bg-gray-200 w-10 h-10 border border-black flex text-center" type="text" placeholder="" required />
               <input maxLength={1} className="bg-gray-200 w-10 h-10 border border-black flex text-center" type="text" placeholder="" required />
               <input maxLength={1} className="bg-gray-200 w-10 h-10 border border-black flex text-center" type="text" placeholder="" required />
               <input maxLength={1} className="bg-gray-200 w-10 h-10 border border-black flex text-center" type="text" placeholder="" required />
-              <input maxLength={1} className="bg-gray-200 w-10 h-10 border border-black flex text-center" type="text" placeholder="" required />
+              <input maxLength={1} className="bg-gray-200 w-10 h-10 border border-black flex text-center" type="text" placeholder="" required /> */}
             </div>
           </div>
 
