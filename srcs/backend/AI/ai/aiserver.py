@@ -6,10 +6,11 @@ import requests
 import random, string
 import twikit
 import os
+from .models import conversations
 
 os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 
-async def get_tweets(searchFor, cookies):
+async def get_tweets(searchFor, cookies, identity):
     FOOTBALL_TRUSTED_ACCOUNTS = [
     "SkySportsNews", "BBCFootball", "ESPNFC", "goal", "FabrizioRomano",
     "premierleague", "ChampionsLeague", "FIFAcom"
@@ -58,6 +59,7 @@ async def get_tweets(searchFor, cookies):
         return None
     print("Tweets Matched:")
     AllTweets = []
+    conv_id = "conversations" + ''.join(random.choices(string.digits, k=10))
     for tweet in tweets:
         tweet_time = datetime.strptime(tweet.created_at, '%a %b %d %H:%M:%S %z %Y')
         AllTweets.append({
@@ -67,15 +69,18 @@ async def get_tweets(searchFor, cookies):
             'likes': tweet.favorite_count,
             'created_at': tweet_time,
             'real_time': tweet.created_at,
-            'conversation_id': 'conversation'.join(random.choices(string.digits, k=10))
+            'conversation_id': conv_id
         })
-    AllTweets.sort(key=lambda x: x['created_at'], reverse=True)
     if len(AllTweets) > 0:
+        AllTweets.sort(key=lambda x: x['created_at'], reverse=True)
+        startConversation = conversations.objects.get(identity=identity)
         AllTweets[0].pop('created_at')
+        startConversation.topics[conv_id] = {f"Your Message 1": AllTweets[0]}
+        startConversation.save()
         return AllTweets[0]
     return None
 
-async def get_google_news(params, newsurl):
+async def get_google_news(params, newsurl, identity):
     response = requests.get(newsurl, params=params)
     await asyncio.sleep(10)
     if response is None:
@@ -94,7 +99,8 @@ async def get_google_news(params, newsurl):
             publishDate = article['publishedAt']
             if author is None or newsUrl is None or source is None:
                 print("Not Trusted")
-            return {
+            conv_id = "conversations" + ''.join(random.choices(string.digits, k=10))
+            theRes = {
                 'formWhere': 'NEWS',
                 'source': source,
                 'author': author,
@@ -103,12 +109,16 @@ async def get_google_news(params, newsurl):
                 'newsUrl': newsUrl,
                 'newsImage': newsImage,
                 'publishDate': publishDate,
-                'conversation_id': 'conversation'.join(random.choices(string.digits, k=10))
+                'conversation_id': conv_id
             }
+            startConversation = conversations.objects.get(identity=identity)
+            startConversation.topics[conv_id] = {f"Your Message 1": theRes}
+            startConversation.save()
+            return theRes
         else:
             return None
     else:
-        print(response.status_code)
+        print(f"")
         return None
 
 class lastNews(AsyncJsonWebsocketConsumer):
@@ -140,8 +150,6 @@ class lastNews(AsyncJsonWebsocketConsumer):
                     await self.channel_layer.group_add(field+self.todayCode, self.channel_name)
             await self.accept()
             asyncio.create_task(self.sendNews(workingFields))
-            
-
         except Exception as e:
             print(f"Error {e}")
     
@@ -150,7 +158,7 @@ class lastNews(AsyncJsonWebsocketConsumer):
             for query in self.fields:
                 code = self.switchFields.get(query)
                 if code in workingFields:
-                    newsFromTweets = await get_tweets(query, self.cookies)
+                    newsFromTweets = await get_tweets(query, self.cookies, self.scope.get('identity'))
                     if newsFromTweets is not None:
                         try:
                             print(f"Send Tweets for {code}")
@@ -159,7 +167,7 @@ class lastNews(AsyncJsonWebsocketConsumer):
                         except Exception as e:
                             print(f"Error: {e}")
                     params = {'q': f"{query} News", 'language': 'en', 'sortBy': 'publishedAt', 'apiKey': self.newsapikey}
-                    newsFromGoogling = await get_google_news(params, self.newsurl) 
+                    newsFromGoogling = await get_google_news(params, self.newsurl, self.scope.get('identity')) 
                     print(f"Send News for {code}")
                     if newsFromGoogling is not None:
                         try:

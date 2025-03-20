@@ -6,69 +6,65 @@ from django.conf import settings
 import requests
 import json
 from datetime import datetime
+from bs4 import BeautifulSoup
 
-# def getGoogleHelp(question):
-#     API_KEY = settings.SEARCH_API_KEY
-#     SEARCH_ENGINE_ID = settings.SEARCH_ENGINE_ID
-#     url = settings.SEARCH_URL
-#     params = {
-#         "key": API_KEY,
-#         "cx": SEARCH_ENGINE_ID,
-#         "q": question,
-#         "sort": "date",
-#         "num":  5,
-#     }
-#     apiRes = requests.get(url, params=params)
-#     if apiRes.status_code == 200:
-#         results = apiRes.json()
-#         helper = []
-#         for item in results.get("items", []):
-#             # print(f"Title: {item['title']}")
-#             # print(f"Link: {item['link']}")
-#             # print(f"Snippet: {item['snippet']}\n")
-#             try:
-#                 page_response = requests.get(item['link'], timeout=20)
-#                 if page_response.status_code == 200:
-#                     soup = BeautifulSoup(page_response.text, 'html.parser')
-#                     paragraphs = soup.find_all('p')
-#                     if paragraphs:
-#                         # Get first 3 paragraphs, limit to 500 chars
-#                         answer_text = " ".join(p.get_text(strip=True) for p in paragraphs[:3])[:500]
-#                     helper.append(page_response.text)
-#                 else:
-#                     print(f"   Failed to fetch content: Status {page_response.status_code}")
-#             except requests.exceptions.RequestException as e:
-#                 print(f"   Error fetching content: {e}")
-#             # helper.append(item)
-#         return helper
-#     return None
-
-def getWikiPediaHelp(question):
-    url = "https://en.wikipedia.org/w/api.php"
+def getGoogleTextHelp(question):
+    API_KEY = settings.SEARCH_API_KEY
+    SEARCH_ENGINE_ID = settings.SEARCH_ENGINE_ID
+    url = settings.SEARCH_URL
     params = {
-        "action": "query",
-        "prop": "extracts",
-        "exintro": True,
-        "explaintext": True,
-        "titles": question,
-        "format": "json",
-        "redirects": True
+        "key": API_KEY,
+        "cx": SEARCH_ENGINE_ID,
+        "q": question,
+        "sort": "date",
+        "num":  5,
     }
-    response = requests.get(url, params=params)
-    if response.status_code == 200:
-        toJeson = response.json()
-        # page = next(iter(toJeson["query"]["pages"].values()))
-        print("+++++++++++++++++++++++++++++++++++++++++++++++")
-        print(toJeson)
-        print("+++++++++++++++++++++++++++++++++++++++++++++++")
-        return toJeson
+    apiRes = requests.get(url, params=params)
+    if apiRes.status_code == 200:
+        results = apiRes.json()
+        helper = []
+        for item in results.get("items", []):
+            try:
+                page_response = requests.get(item['link'], timeout=20)
+                if page_response.status_code == 200:
+                    soup = BeautifulSoup(page_response.text, 'html.parser')
+                    paragraphs = soup.find_all('p')
+                    if paragraphs:
+                        answer_text = " ".join(p.get_text(strip=True) for p in paragraphs[:3])[:500]
+                        helper.append(answer_text)
+                else:
+                    print(f"Failed to fetch content: Status {page_response.status_code}")
+            except requests.exceptions.RequestException as e:
+                print(f"Error fetching content: {e}")
+        print(f'TEXT TO HEEEEEEEEEEEEEEEEELP ==> {helper}')
+        return helper
     return None
 
-        # user_data = is_auth_user(req.COOKIES.get('Access-Token'), req.COOKIES.get('Refresh-Token'))
+# def getWikiPediaHelp(question):
+#     url = "https://en.wikipedia.org/w/api.php"
+#     params = {
+#         "action": "query",
+#         "prop": "extracts",
+#         "exintro": True,
+#         "explaintext": True,
+#         "titles": question,
+#         "format": "json",
+#         "redirects": True
+#     }
+#     response = requests.get(url, params=params)
+#     if response.status_code == 200:
+#         toJeson = response.json()
+#         # page = next(iter(toJeson["query"]["pages"].values()))
+#         print("+++++++++++++++++++++++++++++++++++++++++++++++")
+#         print(toJeson)
+#         print("+++++++++++++++++++++++++++++++++++++++++++++++")
+#         return toJeson
+#     return None
+
 @decorators.api_view(['POST'])
 def chatbot(req):
     try:
-            user_data = is_auth_user(req.headers.get('Access-Token'), req.headers.get('Refresh-Token'))
+        user_data = is_auth_user(req.headers.get('Access-Token'), req.headers.get('Refresh-Token'))
     except Exception as error:
         return response.Response({'Authentication': 'Permission Needed'},
                                  status=status.HTTP_404_NOT_FOUND)
@@ -98,7 +94,7 @@ def chatbot(req):
         summary1 = aires1.text.strip()
         print("Good Question: ", summary1)
         # help = getGoogleHelp(summary1)
-        help = getWikiPediaHelp(summary1)
+        help = getGoogleTextHelp(summary1)
         task2 = {
             'What Is this': 'There is a conversation between you and a client\n',
             'Today Date': datetime.today().strftime('%m/%d/%Y'),
@@ -108,6 +104,7 @@ def chatbot(req):
             'Step2': f'Analyze this question: {question}\n',
             'Step3': f'Analyze this helper article from google: {help}\n',
             'Target': f'Search on web and use the articles provided from google or do any thing to answer the question',
+            'Rule': 'Talk like you are talking this client for a while do not ay `based on the conversation` or repeat the question',
             'Nb': 'be smart and the most important thing is to give me the answer',
         }
         print("Journalist Think of answer...")
