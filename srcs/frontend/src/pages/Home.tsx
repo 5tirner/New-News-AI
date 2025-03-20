@@ -13,26 +13,26 @@ import { TbLayoutNavbarExpandFilled } from "react-icons/tb";
 
 function NewsFieldsPage() {
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const [isField, setField] = useState([]);
 
   const [isFirstVisible, setIsFirstVisible] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("fields"); // Replace with your API URL
-        const data = await response.json();
-        setField(data.fields); // Assuming data has a 'fields' array
-        console.log("this is list of field" + data.fields)
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch("/auth/api/fields"); // Replace with your API URL
+  //       const data = await response.json();
+  //       setField(data.fields); // Assuming data has a 'fields' array
+  //       console.log("this is list of field" + data.fields)
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
 
-    fetchData();
-  }, []); // Empty dependency array ensures it runs only once
+  //   fetchData();
+  // }, []); // Empty dependency array ensures it runs only once
   return (
     <div className="flex h-screen bg-[#fdfbee]">
       {/* Sidebar */}

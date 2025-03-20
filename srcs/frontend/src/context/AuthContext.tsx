@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { getCookie } from "../utils/getCoockie";
 import { useAlert } from "./AlertContext";
 import { useNavigate } from "react-router-dom";
@@ -17,18 +17,16 @@ const API_URL = '/auth/api/profile';
 
 // AuthProvider Component
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+
+  console.log("i call AuthProvider() for ", children);
+  
   const navigate = useNavigate();
   const {showAlert} = useAlert();
   let Access = getCookie("Access-Token");
   let Refresh = getCookie("Refresh-Token");
 
-  console.log(`${Access}, ${Refresh}`);
-  
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
-    Access !== null || Refresh !== null  // Check if user is logged in
-  );
-
   const checkAuth = async () => {
+    console.log(`Access-Token:${Access}, Refresh-Token:${Refresh}`);
     try {
       const response = await fetch(API_URL, {
         method: "GET",
@@ -43,11 +41,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setIsAuthenticated(true);
     } catch(e) {
       setIsAuthenticated(false);
-      console.log(e.message);
     }
   };
 
-  checkAuth();
+  useEffect(() => {
+    checkAuth();
+  }, []);
+  
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   const login = () => {
     showAlert("Login successful! Welcome back.", "success");

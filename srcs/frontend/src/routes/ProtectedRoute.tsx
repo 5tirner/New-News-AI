@@ -18,9 +18,8 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
       return;
     }
 
-    // Open WebSocket only once
     socketRef.current = new WebSocket(WS_URL);
-
+    
     socketRef.current.onopen = () => {
       console.log("WebSocket connected.");
     };
@@ -32,21 +31,18 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
       console.log("From :", data["formWhere"]);
 
 
-      if (data["formWhere"] === "Twitter") {
-        console.log("title:", data["username"]);
-        console.log("text:", data["text"]);
-        addNews({
-          title: `${data["username"]}`,
-          content: `${data["text"]}`,
-        });
-      } else if (data["formWhere"] === "NEWS") {
-        console.log("title:", data["title"]);
-        console.log("text:", data["subj"]);
-        addNews({
-          title: `${data["title"]}`,
-          content: `${data["subj"]}`,
-        });
-      }
+      const newNews = {
+        title: data["formWhere"] === "Twitter" ? data["username"] : data["title"],
+        content: data["formWhere"] === "Twitter" ? data["text"] : data["subj"],
+        id: data["conversation_id"],
+        from: data["formWhere"],
+        username: data["formWhere"] === "Twitter" ? data["username"] : data["source"],
+        date: data["formWhere"] === "Twitter" ? data["real_time"] : data["publishDate"],
+        image: data["newsImage"] || undefined,
+        url: data["newsUrl"] || undefined,
+      };
+
+      addNews(newNews);
     };
 
     socketRef.current.onclose = () => {
@@ -59,20 +55,24 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
 
     return () => {
       if (socketRef.current) {
+        console.log("🔴 Closing WebSocket...");
         socketRef.current.close();
+        socketRef.current = null;
       }
     };
   }, [isAuthenticated]);
 
   useEffect(() => {
-    console.log("All News :", news);
+    console.log("📢 All News Updated:", news);
   }, [news]);
 
-  if (isAuthenticated) {
-    return children;
+
+  if (!isAuthenticated) {
+    console.log("⛔ You don't have access to this page...");
+    return <Navigate to="/login" replace />;
   }
 
-  return <Navigate to="/login" replace />;
+  return children;
 };
 
 export default ProtectedRoute;

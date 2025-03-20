@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useAlert } from "../context/AlertContext";
@@ -32,31 +32,28 @@ const Login = () => {
         })
       });
 
-      if (!response.ok)
-        throw new Error(`Response status : ${response.status}`);
-
       const json = await response.json();
+      if(response.status == 401){
+        navigate("/verify", {state : {email, password}});
+        return;
+      }
+
+      if (!response.ok){
+        throw new Error(json["email"]);
+      }
+
       document.cookie = `Access-Token=${json["Access-Token"]}`;
       document.cookie = `Refresh-Token=${json["Refresh-Token"]}`;
       
-      // localStorage.setItem("Access-Token", json["Access-Token"]);
-      // localStorage.setItem("Refresh-Token", json["Refresh-Token"]);
       login();
-      // field();
-
-      navigate('/Field')
-      console.log(json);
-
+      console.log("navigate to Field page ...");
+      
+      navigate("/Field");
     } catch (error) {
-      try{
         showAlert("Invalid email or password. Please try again.", "error");
-      }catch (e) {
-        console.log(e.message);
-      }
-      console.error("catch the Error here : "+error.message);
     }
   };
-
+  
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#fdfbee] p-4">
       <div className="w-full max-w-md bg-white p-6  border border-black  shadow-[4px_4px_0px_rgba(0,0,0,1)] ">

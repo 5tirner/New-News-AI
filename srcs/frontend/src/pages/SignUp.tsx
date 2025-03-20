@@ -19,6 +19,10 @@ const SignUp = () => {
       showAlert("Passwords do not match. Please try again.", "error");
       return;
     }
+    if (password.length < 8) {
+      showAlert("Password must be at least 8 characters long.", "error");
+      return;
+    }
     console.log("Signing up with", { name, email, password });
 
 
@@ -35,14 +39,16 @@ const SignUp = () => {
           'password' : password
         })
       });
-      if (!response.ok)
-        throw new Error("from backend ,Error status : " + response.status);
+      if (!response.ok){
+        const data = await response.json();
+        throw new Error(data["Weak Password"] || data["email"]);
+      }
       
       console.log("redirecting to verification ...");
-      navigate('/verify', { state: { email } });
+      navigate('/verify', { state: { email, password} });
 
     } catch(e) {
-      console.log(e.message);
+      showAlert(e.message, "error");
     }
   };
 
