@@ -8,13 +8,13 @@ services:
       - net
     env_file:
       - ./.env
-    volumes:
-      - /home/zasabri/Desktop/newNews/srcs/backend/AI/ai/views.py:/work/ai/views.py
-      - /home/zasabri/Desktop/newNews/srcs/backend/AI/ai/aiserver.py:/work/ai/aiserver.py
-      - /home/zasabri/Desktop/newNews/srcs/backend/AI/zauth/views.py:/work/zauth/views.py
-      - /home/zasabri/Desktop/newNews/srcs/backend/AI/newNews/settings.py:/work/newNews/settings.py
-      - /home/zasabri/Desktop/newNews/srcs/backend/AI/newNews/asgi.py:/work/newNews/asgi.py
-      - /home/zasabri/Desktop/newNews/srcs/backend/AI/newNews/wsMiddleWare.py:/work/newNews/wsMiddleWare.py
+    # volumes:
+    #   - /home/arahmoun/Desktop/New-News-AI/srcs/backend/AI/ai/views.py:/work/ai/views.py
+    #   - /home/arahmoun/Desktop/New-News-AI/srcs/backend/AI/ai/aiserver.py:/work/ai/aiserver.py
+    #   - /home/arahmoun/Desktop/New-News-AI/srcs/backend/AI/zauth/views.py:/work/zauth/views.py
+    #   - /home/arahmoun/Desktop/New-News-AI/srcs/backend/AI/newNews/settings.py:/work/newNews/settings.py
+    #   - /home/arahmoun/Desktop/New-News-AI/srcs/backend/AI/newNews/asgi.py:/work/newNews/asgi.py
+    #   - /home/arahmoun/Desktop/New-News-AI/srcs/backend/AI/newNews/wsMiddleWare.py:/work/newNews/wsMiddleWare.py
 
   frontend:
     container_name: frontend

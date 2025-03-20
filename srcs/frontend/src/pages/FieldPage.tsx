@@ -2,6 +2,7 @@
 // import { useState } from "react";
 import { getCookie } from "../utils/getCoockie";
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const FieldSection = () => {
@@ -9,6 +10,7 @@ const FieldSection = () => {
     console.log("i am in field page (^_^)");
     let Access = getCookie("Access-Token");
     const [selectedFields, setSelectedFields] = useState([]);
+    const { setField } = useAuth();
     const navigate = useNavigate();
 
     const handleFieldSelection = (field) => {
@@ -21,7 +23,6 @@ const FieldSection = () => {
 
     const handleSubmit = async () => {
         console.log("Fields :", JSON.stringify({ fields: selectedFields }))
-        // navigate("/home");
 
         try {
             const response = await fetch("/auth/api/fields", {
@@ -35,6 +36,7 @@ const FieldSection = () => {
             });
             if (response.ok) {
                 console.log("Fields submitted successfully");
+                setField(true);
                 navigate("/home");
             } else {
                 console.error("Failed to submit fields");
