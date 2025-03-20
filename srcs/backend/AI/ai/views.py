@@ -149,5 +149,6 @@ def getAllConversations(req):
     except Exception as error:
         return response.Response({'Authentication': 'Permission Needed'},
                                  status=status.HTTP_404_NOT_FOUND)
+    toSend:dict = {}
     convs = conversations.objects.get(identity=user_data.identity)
-    return response.Response(convs.topics, status=status.HTTP_200_OK)
+    return response.Response(convs.titles, status=status.HTTP_200_OK)
