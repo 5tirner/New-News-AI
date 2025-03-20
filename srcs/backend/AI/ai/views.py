@@ -7,6 +7,9 @@ import requests
 import json
 from datetime import datetime
 from bs4 import BeautifulSoup
+import requests
+import time
+
 
 def getGoogleTextHelp(question):
     API_KEY = settings.SEARCH_API_KEY
@@ -73,7 +76,6 @@ def chatbot(req):
         aires1 = aimodel.generate_content(f"Following this:{json.dumps(task1)}")
         summary1 = aires1.text.strip()
         print("Good Question: ", summary1)
-
         help = getGoogleTextHelp(summary1)
         task2 = {
             'What Is this': 'There is a conversation between you and a client\n',
@@ -99,6 +101,7 @@ def chatbot(req):
     except Exception as e:
         print(f"Error summarizing with Gemini: {e}")
         return  response.Response({'ai confused': 'AI failed to generate this content'}, status=status.HTTP_429_TOO_MANY_REQUESTS)
+    time.sleep(3)
     return response.Response({'answer': summary2}, status=status.HTTP_200_OK)
 
 # @decorators.api_view(['POST'])
