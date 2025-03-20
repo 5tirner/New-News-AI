@@ -40,27 +40,6 @@ def getGoogleTextHelp(question):
         return helper
     return None
 
-# def getWikiPediaHelp(question):
-#     url = "https://en.wikipedia.org/w/api.php"
-#     params = {
-#         "action": "query",
-#         "prop": "extracts",
-#         "exintro": True,
-#         "explaintext": True,
-#         "titles": question,
-#         "format": "json",
-#         "redirects": True
-#     }
-#     response = requests.get(url, params=params)
-#     if response.status_code == 200:
-#         toJeson = response.json()
-#         # page = next(iter(toJeson["query"]["pages"].values()))
-#         print("+++++++++++++++++++++++++++++++++++++++++++++++")
-#         print(toJeson)
-#         print("+++++++++++++++++++++++++++++++++++++++++++++++")
-#         return toJeson
-#     return None
-
 @decorators.api_view(['POST'])
 def chatbot(req):
     try:
@@ -105,7 +84,8 @@ def chatbot(req):
             'Step2': f'Analyze this question: {question}\n',
             'Step3': f'Analyze this helper article from google: {help}\nBut if the question is easy for you do not analyze them',
             'Target': f'Search on web and use the articles provided from google or do any thing to answer the question',
-            'Rule': 'Talk like you are talking this client for a while do not say `based on the conversation` or repeat the question or saying hey everytime or say the News number',
+            'Rule1': 'Talk like you are talking this client for a while do not say `based on the conversation and the things like this`',
+            'Rule2': 'Do not Repeat what you get from the conversation, make it better or do not use it',
             'Nb': 'be smart and the most important thing is to give me the answer',
         }
         print("Journalist Think of answer...")
@@ -166,5 +146,5 @@ def getAllConversations(req):
     except Exception as error:
         return response.Response({'Authentication': 'Permission Needed'},
                                  status=status.HTTP_404_NOT_FOUND)
-    convs = conversations.objects.all().values()
-    return response.Response(convs, status=status.HTTP_200_OK)
+    convs = conversations.objects.get(identity=user_data.identity)
+    return response.Response(convs.topics, status=status.HTTP_200_OK)
