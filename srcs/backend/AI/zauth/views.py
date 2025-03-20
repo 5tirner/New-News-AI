@@ -132,8 +132,8 @@ def storeUserFileds(req):
         return response.Response({'Authentication': 'Permission Needed'},
                                  status=status.HTTP_404_NOT_FOUND)
     data = req.data.get('fields')
-    if data is None:
-        return response.Response({'fields': 'Required Field'}, status=status.HTTP_400_BAD_REQUEST)
+    if data is None or len(field) == 0:
+        return response.Response({'fields': 'Required Field', 'fields': 'This field cannot be emptu'}, status=status.HTTP_400_BAD_REQUEST)
     try:
         getUserFields = userFields.objects.create(identity=user_data.identity)
     except:
