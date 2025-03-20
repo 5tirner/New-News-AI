@@ -9,7 +9,7 @@ const API_URL = `/auth/api/signin`;
 
 const Login = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, login } = useAuth();
+  const { isAuthenticated, hasRegisteredFields, login } = useAuth();
   const { showAlert } = useAlert();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -47,7 +47,9 @@ const Login = () => {
 
       document.cookie = `Access-Token=${json["Access-Token"]}`;
       console.log("✅ Login successful, waiting for state update...");
-      login(json.isSe);
+
+
+      login(json["isSelectFields"]);
 
     } catch (error) {
       showAlert("Invalid email or password. Please try again.", "error");
@@ -59,8 +61,10 @@ const Login = () => {
   useEffect(() => {
     if (isAuthenticated) {
       console.log("🚀 Redirecting to /field because user is authenticated");
-
-      navigate("/field");
+      if (hasRegisteredFields)
+        navigate("/home");
+      else
+        navigate("/field");
     }
   }, [isAuthenticated]);
   

@@ -28,11 +28,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
   const {showAlert} = useAlert();
   let Access = getCookie("Access-Token");
-  let Refresh = getCookie("Refresh-Token");
 
   const checkAuth = async () => {
     console.log(`Access-Token:${Access}`);
-    console.log(`Refresh-Token:${Refresh}`);
     try {
       const response = await fetch(API_URL, {
         method: "GET",
@@ -68,7 +66,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     showAlert("Logout successful. See you soon!", "success");
     setIsAuthenticated(false);
     document.cookie = "Access-Token="; // Remove token
-    document.cookie = "Refresh-Token="; // Remove token
     navigate("/");
   };
   
