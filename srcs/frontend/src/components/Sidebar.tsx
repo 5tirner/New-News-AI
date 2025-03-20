@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { getCookie } from "../utils/getCoockie";
 import { TbLayoutNavbarCollapseFilled } from "react-icons/tb";
 import { TbLayoutNavbarExpandFilled } from "react-icons/tb";
-
+import { useNavigate } from "react-router-dom"; // Import useNavigate instead of Navigate
 
 const Sidebar = () => {
+  const navigate = useNavigate(); // Use the hook instead of the component
   let Access = getCookie("Access-Token");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isField, setField] = useState<string[]>([]);
-  const [history, setHistory] = useState<string[]>([]); // Added history state
+  const [history, setHistory] = useState<{ title: string, id: string }[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,21 +47,12 @@ const Sidebar = () => {
         }
 
         const historyData = await historyResponse.json();
-        // Extract titles from the nested structure
-        const titles = Object.values(historyData).flatMap(conversation => 
-          Object.values(conversation).map(item => item.text)
-        );
-        function parseArray(arr) {
-          return arr
-            .filter(text => text !== undefined) // Remove undefined values
-            .map(text => 
-              text.length > 10 
-                ? text.slice(0, 10) + "..." 
-                : text
-            );
-        }
-        setHistory(parseArray(titles));
-
+        const historyItems = Object.entries(historyData).map(([convId, convData]) => ({
+          id: convId,
+          title: convData.title
+        }));
+        
+        setHistory(historyItems);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -69,18 +61,25 @@ const Sidebar = () => {
     fetchData();
   }, []);
 
+  const handleHistoryClick = (conversationId) => {
+    console.log("Selected conversation ID:", conversationId);
+    navigate(`/Journalist`); 
+  
+  };
+
   return (
     <div
-      className={`${isSidebarOpen ? "w-64 bg-[#F5E6CF]" : "w-1 bg-[#fdfbee]"
-        }  transition-all duration-300 p-4 flex flex-col`}
+      className={`${isSidebarOpen ? "w-64 bg-[#F5E6CF]" : "w-1 bg-[#fdfbee]"} transition-all duration-300 p-4 flex flex-col`}
     >
       <button
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         className="text-white p-2 rounded text-right"
       >
-        {isSidebarOpen ?
-          <TbLayoutNavbarCollapseFilled style={{ transform: 'rotate(-90deg)' }} size={30} color="gray" /> :
-          <TbLayoutNavbarExpandFilled style={{ transform: 'rotate(-90deg)' }} size={30} color="gray" />}
+        {isSidebarOpen ? (
+          <TbLayoutNavbarCollapseFilled style={{ transform: 'rotate(-90deg)' }} size={30} color="gray" />
+        ) : (
+          <TbLayoutNavbarExpandFilled style={{ transform: 'rotate(-90deg)' }} size={30} color="gray" />
+        )}
       </button>
 
       {isSidebarOpen && (
@@ -92,15 +91,16 @@ const Sidebar = () => {
             ))}
           </ul>
           <h2 className="font-bold mt-4">History</h2>
-          <div className="max-h-40 overflow-y-auto"> 
+          <div className="max-h-40 overflow-y-auto">
             <ul>
               {history.length > 0 ? (
                 history.map((item, index) => (
                   <li
                     key={index}
-                    className=" mt-3 text-center border border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] h-8 w-full rounded flex items-center justify-center"
+                    onClick={() => handleHistoryClick(item.id)}
+                    className="mt-3 text-center border border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] h-8 w-full rounded flex items-center justify-center cursor-pointer hover:bg-gray-100"
                   >
-                    { item}
+                    {item.title}
                   </li>
                 ))
               ) : (
@@ -112,6 +112,6 @@ const Sidebar = () => {
       )}
     </div>
   );
-}
+};
 
 export default Sidebar;

@@ -2,10 +2,12 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { getCookie } from "../utils/getCoockie";
 import Sidebar from "../components/Sidebar";
+// import { useParams } from "react-router-dom";
 
 
 
 const ChatSection = () => {
+  // const { conversationId } = useParams();
   const Access = getCookie("Access-Token");
   const navigate = useNavigate();
   const location = useLocation();
@@ -13,9 +15,11 @@ const ChatSection = () => {
   const [newMessage, setNewMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false); // Loading state for bot response
   const newsItem = location.state?.newsItem || "";
+  // const effectiveConversationId = conversationId || location.state?.newsItem.id || "";
+
 
   // if (event.key === "Enter" && message.trim())
-  console.log("Chat Bot Items : ", newsItem);
+  // console.log("Chat Bot Items : ", newsItem);
   const handleSendMessage = async (e) => {
     if (e.key === "Enter" && newMessage.trim() !== "") {
       const userMessage = { text: newMessage, isUser: true };
@@ -46,7 +50,7 @@ const ChatSection = () => {
       credentials: "include",
       body: JSON.stringify({
         question: userInput,
-        conversation_id: newsItem.id
+        conversation_id: effectiveConversationId
       }),
     });
     const data = await response.json();
