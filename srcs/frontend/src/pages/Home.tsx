@@ -15,24 +15,46 @@ function NewsFieldsPage() {
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  const [isField, setField] = useState([]);
+  // const [isField, setField] = useState([]);
+  const [isField, setField] = useState<string[]>([]); // Explicitly typing the state
+
 
   const [isFirstVisible, setIsFirstVisible] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("fields"); // Replace with your API URL
+        const response = await fetch("auth/api/getUserFields", {
+          method: "GET", 
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include", 
+        });
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+  
         const data = await response.json();
-        setField(data.fields); // Assuming data has a 'fields' array
-        console.log("this is list of field" + data.fields)
+        const filteredFields  = Object.keys(data).filter(key => data[key] === true);
+        console.log("This is the list of fields:", filteredFields);
+        if (!filteredFields) {
+          console.warn("No 'fields' property found in the API response:", filteredFields);
+          return;
+        }
+        
+        setField(filteredFields);
+        // console.log("this is field list" , data.fields);
+        
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
+  
     fetchData();
-  }, []); // Empty dependency array ensures it runs only once
+  }, []); 
+  
   return (
     <div className="flex h-screen bg-[#fdfbee]">
       {/* Sidebar */}
