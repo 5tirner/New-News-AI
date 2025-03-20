@@ -32,28 +32,44 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const checkAuth = async () => {
     console.log(`Access-Token:${Access}`);
     try {
-      const response = await fetch(API_URL, {
-        method: "GET",
-        credentials: "include",
+      if (!isAuthenticated){
+        
+        const response = await fetch(API_URL, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Token": Access
+          },
+        });
+        const json = await response.json();
+        if (!response.ok)
+          throw new Error(json);
+        setIsAuthenticated(true);
+      }
+    } catch(e) {
+      showAlert("You must be logged in to access this page.", "error");
+      setIsAuthenticated(false);
+    }
+    if (!hasRegisteredFields){
+
+      const fields = await fetch("auth/api/getUserFields", {
+        method: "GET", 
         headers: {
           "Content-Type": "application/json",
           "Access-Token": Access
         },
+        credentials: "include", 
       });
-      const json = await response.json();
-      if (!response.ok)
-        throw new Error(json);
-      setIsAuthenticated(true);
-    } catch(e) {
-      showAlert("You must be logged in to access this page.", "error");
-      if (isAuthenticated)
-        setIsAuthenticated(false);
+      if (fields.ok) {
+        setHasRegisteredFields(true);
+      } 
     }
   };
 
   useEffect(() => {
     checkAuth();
-  }, []);
+  }, [isAuthenticated, hasRegisteredFields]);
   
 
   const login = (hasFields: boolean) => {

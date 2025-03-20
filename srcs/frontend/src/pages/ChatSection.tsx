@@ -1,19 +1,25 @@
-
-
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { getCookie } from "../utils/getCoockie";
 
 
-const ChatSection = ({ setIsFirstVisible }) => {
+const ChatSection = () => {
+  const Access = getCookie("Access-Token");
+  const navigate = useNavigate();
+  const location = useLocation();
   const [messages, setMessages] = useState<{ text: string; isUser: boolean }[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false); // Loading state for bot response
+  const newsItem = location.state?.newsItem || "";
 
+
+  console.log("Chat Bot Items : ", newsItem);
   const handleSendMessage = async () => {
     if (newMessage.trim() !== "") {
       const userMessage = { text: newMessage, isUser: true };
       setMessages((prevMessages) => [...prevMessages, userMessage]);
-      setNewMessage(""); // Clear input field
-      setIsLoading(true); // Show loading state
+      setNewMessage("");
+      setIsLoading(true); 
       try {
         const botResponse = await fetchBotResponse(newMessage);
         setMessages((prevMessages) => [...prevMessages, { text: botResponse, isUser: false }]);
@@ -28,22 +34,26 @@ const ChatSection = ({ setIsFirstVisible }) => {
 
   // API
   const fetchBotResponse = async (userInput: string) => {
-    const response = await fetch("", {
+    const response = await fetch("/ai/api/chat", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Access-Token": Access
       },
-      body: JSON.stringify({ message: userInput }),
+      credentials: "include",
+      body: JSON.stringify({ 
+        question: userInput,
+        conversation_id: newsItem.id
+      }),
     });
-
     const data = await response.json();
-    return data.reply || "I couldn't understand that. Try asking something else!";
+    return data;
   };
 
   return (
     <>
       <div className="w-[100%] text-right">
-        <button className="bg-gray-200  w-[5%]  text-black shadow-[2px_2px_0px_rgba(0,0,0,1)] border border-black" onClick={() => setIsFirstVisible(true)} >Back</button>
+        <button className="bg-gray-200  w-[5%]  text-black shadow-[2px_2px_0px_rgba(0,0,0,1)] border border-black" onClick={() => navigate(-1)} >Back</button>
       </div>
       <div className="h-full w-full flex flex-col items-center justify-end gap-5">
 

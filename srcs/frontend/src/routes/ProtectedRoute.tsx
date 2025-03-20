@@ -9,7 +9,7 @@ const WS_URL = "ws://"+window.location.host+"/livenews/";
 const RECONNECT_INTERVAL = 10000; // 5 seconds
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, hasRegisteredFields } = useAuth();
   const { showAlert } = useAlert();
   const { news, addNews } = useNews();
   const socketRef = useRef<WebSocket | null>(null);
@@ -82,7 +82,7 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && hasRegisteredFields) {
       connectWebSocket();
     } else if (socketRef.current) {
       console.log("🔴 Closing WebSocket due to authentication state change");
@@ -107,7 +107,7 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
         reconnectTimeoutRef.current = null;
       }
     };
-  }, [isAuthenticated]);
+  }, [isAuthenticated, hasRegisteredFields]);
 
   useEffect(() => {
     console.log("News : ", news);

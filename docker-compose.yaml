@@ -24,7 +24,7 @@ services:
     networks:
       - net
     volumes:
-      - /home/arahmoun/Desktop/New-News-AI/srcs/frontend:/app/
+      - ./srcs/frontend:/app/
 
   nginx:
     container_name: nginx
@@ -39,7 +39,7 @@ services:
     networks:
       - net
     volumes:
-      - /home/arahmoun/Desktop/New-News-AI/srcs/frontend/dist:/usr/share/nginx/html
+      - ./srcs/frontend/dist:/usr/share/nginx/html
 
 networks:
   net:

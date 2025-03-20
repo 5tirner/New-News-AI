@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 
-interface NewsItem {
+export interface NewsItem {
   id: string;
   from: string;
   username: string;

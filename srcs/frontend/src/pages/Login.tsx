@@ -66,7 +66,7 @@ const Login = () => {
       else
         navigate("/field");
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, hasRegisteredFields]);
   
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#fdfbee] p-4">
