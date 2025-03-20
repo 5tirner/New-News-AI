@@ -16,6 +16,7 @@ class wsAuth(BaseMiddleware):
     async def __call__(self, scope, receive, send):
         toDict:dict = dict(scope.get('headers'))
         access:str = toDict.get(b'cookie').decode('ascii').replace('Access-Token=', '')
+        print("My Access: ", access)
         if access is None:
             raise Exception('Cookie: This header is missing')
         try:
