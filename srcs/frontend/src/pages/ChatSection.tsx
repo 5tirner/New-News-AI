@@ -50,7 +50,7 @@ const ChatSection = () => {
       credentials: "include",
       body: JSON.stringify({
         question: userInput,
-        conversation_id: effectiveConversationId
+        conversation_id: newsItem
       }),
     });
     const data = await response.json();
