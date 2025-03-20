@@ -1,14 +1,19 @@
 import { Navigate } from "react-router-dom";
+import { getCookie } from "../utils/getCoockie";
 import { useAuth } from "../context/AuthContext";
 import { useAlert } from "../context/AlertContext";
 import { useEffect, useRef, useState } from "react";
 import { useNews } from "../context/newsContext";
+import { header } from "framer-motion/client";
+import { Cookie } from "lucide-react";
 
 // Move to environment variables or configuration file in production
-const WS_URL = "/livenews/";
+const WS_URL = "ws://"+window.location.host+"/livenews/";
 const RECONNECT_INTERVAL = 10000; // 5 seconds
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
+  let Access = getCookie("Access-Token");
+  console.log('I am: ', Access)
   const { isAuthenticated } = useAuth();
   const { showAlert } = useAlert();
   const { addNews } = useNews();

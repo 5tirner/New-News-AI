@@ -46,8 +46,6 @@ const Login = () => {
       }
 
       document.cookie = `Access-Token=${json["Access-Token"]}`;
-      document.cookie = `Refresh-Token=${json["Refresh-Token"]}`;
-
       console.log("✅ Login successful, waiting for state update...");
       login();
       // navigate("/field");
