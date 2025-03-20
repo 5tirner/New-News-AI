@@ -8,7 +8,7 @@ def proccesFieelds(access):
     data = tokens_db.objects.get(access_token=access)
     try:
         fields = userFields.objects.get(identity=data.identity)
-        return fields.fields
+        return {'fields': fields.fields, 'identity': data.identity}
     except:
         return None
 
@@ -24,5 +24,6 @@ class wsAuth(BaseMiddleware):
             raise Exception("Cookie: Invalide header value")
         if res is None:
             raise Exception("Fields Empty")
-        scope["fields"] = res
+        scope["fields"] = res.get('fields')
+        scope["identity"] = res.get('identity')
         return await super().__call__(scope, receive, send)
