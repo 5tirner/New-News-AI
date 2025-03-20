@@ -82,8 +82,8 @@ body {
     @apply bg-background text-foreground; /* Apply background and text colors */
   }
   /* Custom Scrollbar for Dark/Light Mode */
-  /* ::-webkit-scrollbar {
-    width: 8px;
+  ::-webkit-scrollbar {
+    width: 4px;
   }
   ::-webkit-scrollbar-track {
     background: hsl(var(--background));
@@ -94,6 +94,6 @@ body {
   }
   ::-webkit-scrollbar-thumb:hover {
     background: hsl(var(--muted-foreground));
-  } */
+  }
 }
 

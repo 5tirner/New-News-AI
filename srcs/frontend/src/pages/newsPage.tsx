@@ -55,14 +55,14 @@ const NewsPage = () => {
   }, [Access]); // Re-run if token changes
   
   return (
-    <div className="min-h-screen w-full">
+    <div className="fixed top-0 left-0 py-24 px-10 min-h-screen w-full">
       {/* Main Section */}
-      <main className="p-10 w-full text-center">
+      <main className=" w-full text-center">
         <h2 className="text-3xl font-bold">Find Your News Easily</h2>
         <p className="text-gray-600 mt-2">What’s new?</p>
 
         {/* News Cards */}
-        <div className=" w-full md:h-64 lg:h-96 mt-8 flex flex-col gap-6 items-center justify-start overflow-y-auto ">
+        <div className=" w-full h-dvh mt-8 flex flex-col gap-6 items-center justify-start overflow-y-auto ">
         {news.length > 0 ? (
             news.map((newsItem, index) => (
               <div
