@@ -9,9 +9,6 @@ import { TbLayoutNavbarExpandFilled } from "react-icons/tb";
 
 
 
-
-
-
 function NewsFieldsPage() {
   
   let Access = getCookie("Access-Token");
