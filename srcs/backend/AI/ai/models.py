@@ -4,4 +4,4 @@ from jsonfield import JSONField
 class conversations(models.Model):
     identity = models.EmailField(unique=True, null=False, primary_key=True)
     topics = JSONField()
-    training_data = JSONField()
+    titles = JSONField()
