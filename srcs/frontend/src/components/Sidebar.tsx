@@ -48,10 +48,18 @@ const Sidebar = () => {
         const historyData = await historyResponse.json();
         // Extract titles from the nested structure
         const titles = Object.values(historyData).flatMap(conversation => 
-          Object.values(conversation).map(item => item.title)
-          
-      );
-        setHistory(titles);
+          Object.values(conversation).map(item => item.text)
+        );
+        function parseArray(arr) {
+          return arr
+            .filter(text => text !== undefined) // Remove undefined values
+            .map(text => 
+              text.length > 10 
+                ? text.slice(0, 10) + "..." 
+                : text
+            );
+        }
+        setHistory(parseArray(titles));
 
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -90,7 +98,7 @@ const Sidebar = () => {
                 history.map((item, index) => (
                   <li
                     key={index}
-                    className="text-[10px] mt-3 text-center border border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] h-8 w-full rounded flex items-center justify-center"
+                    className=" mt-3 text-center border border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] h-8 w-full rounded flex items-center justify-center"
                   >
                     { item}
                   </li>
