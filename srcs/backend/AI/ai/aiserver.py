@@ -3,11 +3,14 @@ from django.conf import settings
 import asyncio
 from datetime import datetime
 import requests
-from zauth.views import is_auth_user
 import random, string
 import twikit
+import os
+from .models import conversations
 
-async def get_tweets(searchFor, cookies):
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
+
+async def get_tweets(searchFor, cookies, identity):
     FOOTBALL_TRUSTED_ACCOUNTS = [
     "SkySportsNews", "BBCFootball", "ESPNFC", "goal", "FabrizioRomano",
     "premierleague", "ChampionsLeague", "FIFAcom"
@@ -43,7 +46,6 @@ async def get_tweets(searchFor, cookies):
     client = twikit.Client(language='en-US')
     try:
         client.set_cookies(cookies)
-        print("Cookies Seted successfully.")
     except Exception as e:
         print(f"Failed to load cookies: {e}")
         return None
@@ -57,6 +59,7 @@ async def get_tweets(searchFor, cookies):
         return None
     print("Tweets Matched:")
     AllTweets = []
+    conv_id = "conversations" + ''.join(random.choices(string.digits, k=10))
     for tweet in tweets:
         tweet_time = datetime.strptime(tweet.created_at, '%a %b %d %H:%M:%S %z %Y')
         AllTweets.append({
@@ -66,16 +69,18 @@ async def get_tweets(searchFor, cookies):
             'likes': tweet.favorite_count,
             'created_at': tweet_time,
             'real_time': tweet.created_at,
-            'conversation_id': ''.join(random.choices(string.ascii_uppercase+string.digits, k=10))
-
+            'conversation_id': conv_id
         })
-    AllTweets.sort(key=lambda x: x['created_at'], reverse=True)
     if len(AllTweets) > 0:
+        AllTweets.sort(key=lambda x: x['created_at'], reverse=True)
+        startConversation = conversations.objects.get(identity=identity)
         AllTweets[0].pop('created_at')
+        startConversation.topics[conv_id] = {f"Your Message 1": AllTweets[0]}
+        startConversation.save()
         return AllTweets[0]
     return None
 
-async def get_google_news(params, newsurl):
+async def get_google_news(params, newsurl, identity):
     response = requests.get(newsurl, params=params)
     await asyncio.sleep(10)
     if response is None:
@@ -83,7 +88,7 @@ async def get_google_news(params, newsurl):
     if response.status_code == 200:
         articles = response.json()['articles']
         if len(articles) > 0:
-            print("We have Some Google Arcticles")
+            # print("We have Some Google Arcticles")
             article = articles[0]
             source = article['source']['name']
             author = article['author']
@@ -94,8 +99,8 @@ async def get_google_news(params, newsurl):
             publishDate = article['publishedAt']
             if author is None or newsUrl is None or source is None:
                 print("Not Trusted")
-            print(f"News Source: {source}\nDate: {publishDate}\nUrl: {newsUrl}\nImage: {newsImage}\nTitle: {title}\nSubject: {subj}")
-            return {
+            conv_id = "conversations" + ''.join(random.choices(string.digits, k=10))
+            theRes = {
                 'formWhere': 'NEWS',
                 'source': source,
                 'author': author,
@@ -104,12 +109,16 @@ async def get_google_news(params, newsurl):
                 'newsUrl': newsUrl,
                 'newsImage': newsImage,
                 'publishDate': publishDate,
-                'conversation_id': ''.join(random.choices(string.ascii_uppercase+string.digits, k=10))
+                'conversation_id': conv_id
             }
+            startConversation = conversations.objects.get(identity=identity)
+            startConversation.topics[conv_id] = {f"Your Message 1": theRes}
+            startConversation.save()
+            return theRes
         else:
             return None
     else:
-        print(response.status_code)
+        print(f"")
         return None
 
 class lastNews(AsyncJsonWebsocketConsumer):
@@ -117,41 +126,68 @@ class lastNews(AsyncJsonWebsocketConsumer):
             "auth_token": settings.AUTH_TOKEN,
             "ct0": settings.CT0,
         }
+    todayCode = ''.join(random.choices(string.digits, k=10))
     fields = ['Football', "Information technology", "Cybersecurity", "Crypto", "Politics", "Artificial intelligence"]
+    switchFields = {
+        "Football": 'football',
+        "Information technology": 'it',
+        "Cybersecurity": 'cybersec', 
+        "Crypto": 'crypto',
+        "Politics": 'politic',
+        "Artificial intelligence": 'ai',
+    }
     newsapikey = settings.NEWS_API
     newsurl = settings.NEWS_URL
     delay = 60
+    
     async def connect(self):
-        print(f"The Headers {self.scope}")
+        print(f"The Fileds {self.scope.get('fields')}")
         try:
+            workingFields = self.scope.get('fields')
+            for field in self.switchFields.values():
+                if field in workingFields:
+                    print(f"Add his to the room of {field}")
+                    await self.channel_layer.group_add(field+self.todayCode, self.channel_name)
             await self.accept()
-            today = datetime.today().strftime('%Y-%m-%d')
-            print(today)
-            while True:
-                for query in self.fields:
-                    print(f"Field: {query}")
-                    newsFromTweets = await get_tweets(query, self.cookies)
-                    if newsFromTweets is not None:
-                        print("We Have Som Tweets")
-                        try:
-                            await self.send_json(newsFromTweets)
-                            await asyncio.sleep(self.delay)
-                        except Exception as e:
-                            print(f"Error: {e}")
-                    print("Go To Google")
-                    params = {'q': f"{query} News", 'language': 'en', 'sortBy': 'publishedAt', 'apiKey': self.newsapikey}
-                    newsFromGoogling = await get_google_news(params, self.newsurl)
-                    print("Google News Ready To Send")
-                    if newsFromGoogling is not None:
-                        await self.send_json(newsFromGoogling)
-                        await asyncio.sleep(self.delay)
-
+            asyncio.create_task(self.sendNews(workingFields))
         except Exception as e:
             print(f"Error {e}")
     
+    async def sendNews(self, workingFields):
+        while True:
+            for query in self.fields:
+                code = self.switchFields.get(query)
+                if code in workingFields:
+                    newsFromTweets = await get_tweets(query, self.cookies, self.scope.get('identity'))
+                    if newsFromTweets is not None:
+                        try:
+                            print(f"Send Tweets for {code}")
+                            await self.channel_layer.group_send(code+self.todayCode, {"type": "toFront", "Data": newsFromTweets})
+                            await asyncio.sleep(self.delay)
+                        except Exception as e:
+                            print(f"Error: {e}")
+                    params = {'q': f"{query} News", 'language': 'en', 'sortBy': 'publishedAt', 'apiKey': self.newsapikey}
+                    newsFromGoogling = await get_google_news(params, self.newsurl, self.scope.get('identity')) 
+                    print(f"Send News for {code}")
+                    if newsFromGoogling is not None:
+                        try:
+                            await self.channel_layer.group_send(
+                                    code+self.todayCode, {"type": "toFront", "Data": newsFromGoogling}
+                                )
+                            await asyncio.sleep(self.delay)
+                        except Exception as e:
+                            print(f"Error: {e}")
+
     async def disconnect(self, code):
         try:
             print("Disconnect")
             await self.close()
         except:
             print("closing fail")
+    
+    async def toFront(self, data):
+        print("Sending...")
+        try:
+            await self.send_json(data["Data"])
+        except:
+            pass

@@ -119,7 +119,7 @@ def signin(req):
 @decorators.api_view(['GET'])
 def profile_data(req):
     try:
-        user_data = is_auth_user(req.COOKIES.get('Access-Token'), req.COOKIES.get('Refresh-Token'))
+        user_data = is_auth_user(req.headers.get('Access-Token'), req.headers.get('Refresh-Token'))
     except Exception as error:
         return response.Response({'Authentication': 'Permission Needed'},
                                  status=status.HTTP_404_NOT_FOUND)
@@ -130,7 +130,7 @@ def profile_data(req):
 @decorators.api_view(['POST'])
 def storeUserFileds(req):
     try:
-        user_data = is_auth_user(req.COOKIES.get('Access-Token'), req.COOKIES.get('Refresh-Token'))
+        user_data = is_auth_user(req.headers.get('Access-Token'), req.headers.get('Refresh-Token'))
     except Exception as error:
         return response.Response({'Authentication': 'Permission Needed'},
                                  status=status.HTTP_404_NOT_FOUND)
@@ -164,8 +164,9 @@ def getUserFields(req):
     except Exception as error:
         return response.Response({'Authentication': 'Permission Needed'},
                                  status=status.HTTP_404_NOT_FOUND)
-    theFields = userFields.objects.get(identity=user_data.identity)
-    print("Your Fileds", theFields.fields)
-    if len(theFields.fields) == 0:
-        return response.Response({'fields': 'User Do not choose his fields yet'}, status=status.HTTP_400_BAD_REQUEST)
-    return response.Response(theFields.fields, status=status.HTTP_200_OK)
+    try:
+        theFields = userFields.objects.get(identity=user_data.identity)
+        print("Your Fileds", theFields.fields)
+        return response.Response(theFields.fields, status=status.HTTP_200_OK)
+    except:
+        return response.Response({'fields': 'Fields Not Found'}, status=status.HTTP_400_BAD_REQUEST)
