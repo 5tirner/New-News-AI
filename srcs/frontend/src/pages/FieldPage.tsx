@@ -10,6 +10,7 @@ const FieldSection = () => {
     console.log("i am in field page (^_^)");
     let Access = getCookie("Access-Token");
     const [selectedFields, setSelectedFields] = useState([]);
+    const { setField } = useAuth();
     const navigate = useNavigate();
 
     const handleFieldSelection = (field) => {
@@ -35,6 +36,7 @@ const FieldSection = () => {
             });
             if (response.ok) {
                 console.log("Fields submitted successfully");
+                setField(true);
                 navigate("/home");
             } else {
                 console.error("Failed to submit fields");
