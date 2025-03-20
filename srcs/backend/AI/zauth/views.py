@@ -133,7 +133,7 @@ def storeUserFileds(req):
                                  status=status.HTTP_404_NOT_FOUND)
     data = req.data.get('fields')
     if data is None or len(data) == 0:
-        return response.Response({'fields': 'Required Field', 'fields': 'This field cannot be empty'}, status=status.HTTP_400_BAD_REQUEST)
+        return response.Response({'fields': 'Required Field', 'Empty fields': 'This field cannot be empty'}, status=status.HTTP_400_BAD_REQUEST)
     try:
         getUserFields = userFields.objects.create(identity=user_data.identity)
     except:
