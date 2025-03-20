@@ -23,8 +23,6 @@ const SignUp = () => {
       showAlert("Password must be at least 8 characters long.", "error");
       return;
     }
-    console.log("Signing up with", { name, email, password });
-
 
     // Add sign-up logic here
     try {
@@ -44,7 +42,6 @@ const SignUp = () => {
         throw new Error(data["Weak Password"] || data["email"]);
       }
       
-      console.log("redirecting to verification ...");
       navigate('/verify', { state: { email, password} });
 
     } catch(e) {

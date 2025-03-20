@@ -1,9 +1,58 @@
+import { useEffect } from "react";
+import { getCookie } from "../utils/getCoockie";
 import { useNews } from "../context/newsContext";
 import { useNavigate } from "react-router-dom";
 
+const API_URL = '/ai/api/history'; 
+
 const NewsPage = () => {
-  const { news, removeNews } = useNews();
+  const { news, removeNews , addNews} = useNews();
   const navigate = useNavigate();
+  let Access = getCookie("Access-Token");
+
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const response = await fetch(API_URL, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Token": Access,
+          },
+          credentials: "include",
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch history");
+        }
+
+        const json = await response.json();
+
+        const historyArray = Object.values(json);
+
+        historyArray.forEach((dataObj) => {
+          const data = dataObj["notification"];
+          const newNews = {
+            title: data["formWhere"] === "Twitter" ? data["username"] : data["title"],
+            content: data["formWhere"] === "Twitter" ? data["text"] : data["subj"],
+            id: data["conversation_id"],
+            from: data["formWhere"],
+            username: data["formWhere"] === "Twitter" ? data["username"] : data["source"],
+            date: data["formWhere"] === "Twitter" ? data["real_time"] : data["publishDate"],
+            image: data["newsImage"] || undefined,
+            url: data["newsUrl"] || undefined,
+          };
+          addNews(newNews);
+        });
+
+      } catch (e) {
+        console.error("Error fetching history:", e);
+      }
+    };
+
+    fetchHistory();
+  }, [Access]); // Re-run if token changes
   
   return (
     <div className="min-h-screen w-full">

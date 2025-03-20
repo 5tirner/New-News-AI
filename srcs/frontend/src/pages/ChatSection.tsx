@@ -14,8 +14,7 @@ const ChatSection = () => {
   const [isLoading, setIsLoading] = useState(false); // Loading state for bot response
   const newsItem = location.state?.newsItem || "";
 
-  // if (event.key === "Enter" && message.trim())
-  console.log("Chat Bot Items : ", newsItem);
+
   const handleSendMessage = async (e) => {
     if (e.key === "Enter" && newMessage.trim() !== "") {
       const userMessage = { text: newMessage, isUser: true };
@@ -24,11 +23,9 @@ const ChatSection = () => {
       setIsLoading(true); 
       try {
         const botResponse = await fetchBotResponse(newMessage);
-        console.log(botResponse);
         setMessages((prevMessages) => [...prevMessages, { text: botResponse.answer, isUser: false }]);
       } catch (error) {
-        console.error("Chouf Tv:", error);
-        setMessages((prevMessages) => [...prevMessages, { text: "Chouf Tv.", isUser: false }]);
+        setMessages((prevMessages) => [...prevMessages, { text: "please check your connection!", isUser: false }]);
       } finally {
         setIsLoading(false);
       }

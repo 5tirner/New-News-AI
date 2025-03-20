@@ -28,14 +28,12 @@ const Sidebar = () => {
       
             const data = await response.json();
             const filteredFields  = Object.keys(data).filter(key => data[key] === true);
-            console.log("This is the list of fields:", filteredFields);
             if (!filteredFields) {
               console.warn("No 'fields' property found in the API response:", filteredFields);
               return;
             }
     
             setField(filteredFields);
-            // console.log("this is field list" , data.fields);
             
           } catch (error) {
             console.error("Error fetching data:", error);

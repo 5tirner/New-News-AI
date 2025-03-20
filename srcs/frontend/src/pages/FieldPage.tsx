@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 
 const FieldSection = () => {
 
-    console.log("i am in field page (^_^)");
     let Access = getCookie("Access-Token");
     const [selectedFields, setSelectedFields] = useState([]);
     const { setField } = useAuth();
@@ -22,7 +21,6 @@ const FieldSection = () => {
     };
 
     const handleSubmit = async () => {
-        console.log("Fields :", JSON.stringify({ fields: selectedFields }))
 
         try {
             const response = await fetch("/auth/api/fields", {
@@ -35,7 +33,6 @@ const FieldSection = () => {
                 body: JSON.stringify({ fields: selectedFields })
             });
             if (response.ok) {
-                console.log("Fields submitted successfully");
                 setField(true);
                 navigate("/home");
             } else {
