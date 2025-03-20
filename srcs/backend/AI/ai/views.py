@@ -7,73 +7,9 @@ import requests
 import json
 from datetime import datetime
 from bs4 import BeautifulSoup
-from transformers.pipelines import pipeline
 import requests
-from transformers import pipeline
 import time
 
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
-HEADERS = {"User-Agent": USER_AGENT}
-qa_model = pipeline("question-answering", model="distilbert-base-cased-distilled-squad")
-
-def duckduckgo_scrape(query):
-    """Scrape DuckDuckGo for search results."""
-    try:
-        url = f"https://duckduckgo.com/html/?q={query}"
-        response = requests.get(url, headers=HEADERS, timeout=5)
-        soup = BeautifulSoup(response.text, "html.parser")
-        results = soup.select(".result__snippet")
-        if results:
-            snippet = results[0].text.strip()
-            if len(snippet.split()) < 30 and re.search(r"is|equals|means|are", snippet, re.IGNORECASE):
-                return snippet
-        return None
-    except Exception as e:
-        print(f"DuckDuckGo error: {e}")
-        return None
-
-def google_scrape(query):
-    try:
-        url = f"https://www.google.com/search?q={query}"
-        response = requests.get(url, headers=HEADERS, timeout=5)
-        soup = BeautifulSoup(response.text, "html.parser")
-        snippet = soup.select_one(".hgKElc, .zCubwf, .kCrYT")
-        if snippet:
-            text = snippet.text.strip()
-            if len(text.split()) < 30:
-                return text
-        return None
-    except Exception as e:
-        print(f"Google error: {e}")
-        return None
-
-def nlp_refine(query, context):
-    try:
-        result = qa_model(question=query, context=context)
-        if result["score"] > 0.6:
-            return result["answer"]
-        return f"{query} exact answer"
-    except Exception as e:
-        print(f"NLP error: {e}")
-        return query
-
-def search_pipeline(query, context):
-    result = duckduckgo_scrape(query)
-    if result:
-        return result
-    result = google_scrape(query)
-    if result:
-        return f"Answer (Google): {result}"
-    print("Refining query with NLP...")
-    refined_query = nlp_refine(query)
-    if refined_query != query:
-        result = duckduckgo_scrape(refined_query)
-        if result:
-            return f"Answer (DuckDuckGo, refined): {result}"
-        result = google_scrape(refined_query)
-        if result:
-            return f"Answer (Google, refined): {result}"
-    return "No exact answer found. Try a more specific query or check your connection."
 
 def getGoogleTextHelp(question):
     API_KEY = settings.SEARCH_API_KEY
@@ -140,7 +76,6 @@ def chatbot(req):
         aires1 = aimodel.generate_content(f"Following this:{json.dumps(task1)}")
         summary1 = aires1.text.strip()
         print("Good Question: ", summary1)
-
         help = getGoogleTextHelp(summary1)
         task2 = {
             'What Is this': 'There is a conversation between you and a client\n',

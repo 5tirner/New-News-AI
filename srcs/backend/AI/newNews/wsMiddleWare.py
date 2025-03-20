@@ -15,8 +15,15 @@ def proccesFieelds(access):
 class wsAuth(BaseMiddleware):
     async def __call__(self, scope, receive, send):
         toDict:dict = dict(scope.get('headers'))
-        access:str = toDict.get(b'cookie').decode('ascii').replace('Access-Token=', '')
-        if access is None:
+        tokens:str = toDict.get(b'cookie').decode('ascii')
+        tokens = tokens.split(',')
+        access:str = ''
+        for i in tokens:
+            if 'Access-Token=' in i:
+                access = i[i.find('Access-Token=') + len('Access-Token='):]
+                break
+        print(f"Access Token: {access}")
+        if len(access) == 0:
             raise Exception('Cookie: This header is missing')
         try:
             res = proccesFieelds(access)
