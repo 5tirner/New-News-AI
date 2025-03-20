@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 // Define types for AuthContext
 interface AuthContextType {
   isAuthenticated: boolean;
-  login:  () => void;
+  hasRegisteredFields: boolean;
+  login:  (hasFields: boolean) => void;
   logout: () => void;
 }
 
@@ -20,6 +21,7 @@ const API_URL = '/auth/api/profile';
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [hasRegisteredFields, setHasRegisteredFields] = useState<boolean>(false);
 
   console.log("i call AuthProvider() for ", children);
   
@@ -56,9 +58,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
   
 
-  const login = () => {
+  const login = (hasFields: boolean) => {
       showAlert("Login successful! Welcome back.", "success");
       setIsAuthenticated(true);
+      setHasRegisteredFields(hasFields);
   };
 
   const logout = () => {
@@ -69,7 +72,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     navigate("/");
   };
   
-  const authContextValue = { isAuthenticated, login, logout };
+  const authContextValue = { isAuthenticated, hasRegisteredFields,login, logout };
 
   return (
     <AuthContext.Provider value={authContextValue}>
