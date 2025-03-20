@@ -1,5 +1,6 @@
 
 import { useState , useEffect} from "react";
+import { getCookie } from "../utils/getCoockie";
 // import FieldSection from "./FieldPage";
 import NewsPage from "./newsPage";
 import ChatSection from "./ChatSection";
@@ -12,6 +13,8 @@ import { TbLayoutNavbarExpandFilled } from "react-icons/tb";
 
 
 function NewsFieldsPage() {
+  
+  let Access = getCookie("Access-Token");
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -28,6 +31,7 @@ function NewsFieldsPage() {
           method: "GET", 
           headers: {
             "Content-Type": "application/json",
+            "Access-Token": Access
           },
           credentials: "include", 
         });

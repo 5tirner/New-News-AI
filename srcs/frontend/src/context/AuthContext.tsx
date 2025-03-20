@@ -37,6 +37,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
+          "Access-Token": Access
         },
       });
       const json = await response.json();
