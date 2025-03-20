@@ -3,31 +3,6 @@ import { useNews } from "../context/newsContext";
 const NewsPage = ({ setIsFirstVisible }: { setIsFirstVisible: (visible: boolean) => void }) => {
   const { news, removeNews } = useNews();
   
-  // const { news, removeNews } = useNews() || { news: [], removeNews: () => {} };
-
-  // const news = [
-  //   {
-  //     title: "Breaking: Tech Innovation 2025",
-  //     content: "A new wave of AI-driven applications is set to revolutionize the industry.",
-  //   },
-  //   {
-  //     title: "Global Markets Rally",
-  //     content: "Stock markets show strong growth as investors regain confidence.",
-  //   },
-  //   {
-  //     title: "Climate Change Updates",
-  //     content: "Scientists warn of rising temperatures and call for urgent action.",
-  //   },
-  //   {
-  //     title: "Climate Change Updates",
-  //     content: "Scientists warn of rising temperatures and call for urgent action.",
-  //   },
-  //   {
-  //     title: "Climate Change Updates",
-  //     content: "Scientists warn of rising temperatures and call for urgent action.",
-  //   },
-  // ];
-  
   return (
     <div className="min-h-screen w-[80%]">
       {/* Main Section */}

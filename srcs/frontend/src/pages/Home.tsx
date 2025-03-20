@@ -8,12 +8,8 @@ import { TbLayoutNavbarCollapseFilled } from "react-icons/tb";
 import { TbLayoutNavbarExpandFilled } from "react-icons/tb";
 
 
-
-
-
-
 function NewsFieldsPage() {
-  
+
   let Access = getCookie("Access-Token");
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

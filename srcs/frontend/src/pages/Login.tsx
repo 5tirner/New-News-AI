@@ -48,7 +48,6 @@ const Login = () => {
       document.cookie = `Access-Token=${json["Access-Token"]}`;
       console.log("✅ Login successful, waiting for state update...");
       login();
-      // navigate("/field");
 
     } catch (error) {
       showAlert("Invalid email or password. Please try again.", "error");
@@ -60,6 +59,7 @@ const Login = () => {
   useEffect(() => {
     if (isAuthenticated) {
       console.log("🚀 Redirecting to /field because user is authenticated");
+      
       navigate("/field");
     }
   }, [isAuthenticated]);

@@ -21,7 +21,6 @@ const FieldSection = () => {
 
     const handleSubmit = async () => {
         console.log("Fields :", JSON.stringify({ fields: selectedFields }))
-        // navigate("/home");
 
         try {
             const response = await fetch("/auth/api/fields", {
