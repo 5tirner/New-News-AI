@@ -51,7 +51,7 @@ const ChatSection = () => {
   };
 
   return (
-    <div className="flex h-xl bg-[#fdfbee]">
+    <div className="flex h-4xl bg-[#fdfbee]">
       <Sidebar />
       <div className="flex-1 flex flex-col p-6 items-center relative">
         <button
