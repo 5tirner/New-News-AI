@@ -28,12 +28,12 @@ const ChatSection = ({ setIsFirstVisible }) => {
 
   // API
   const fetchBotResponse = async (userInput: string) => {
-    const response = await fetch("", {
+    const response = await fetch("ai/api/chat", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ message: userInput }),
+      body: JSON.stringify({ message: userInput , conversation_id : "conv21" }),
     });
 
     const data = await response.json();

@@ -64,10 +64,11 @@ def getWikiPediaHelp(question):
         return toJeson
     return None
 
+        # user_data = is_auth_user(req.COOKIES.get('Access-Token'), req.COOKIES.get('Refresh-Token'))
 @decorators.api_view(['POST'])
 def chatbot(req):
     try:
-        user_data = is_auth_user(req.COOKIES.get('Access-Token'), req.COOKIES.get('Refresh-Token'))
+            user_data = is_auth_user(req.headers.get('Access-Token'), req.headers.get('Refresh-Token'))
     except Exception as error:
         return response.Response({'Authentication': 'Permission Needed'},
                                  status=status.HTTP_404_NOT_FOUND)
@@ -125,7 +126,7 @@ def chatbot(req):
 @decorators.api_view(['POST'])
 def add_conversation(req):
     try:
-        user_data = is_auth_user(req.COOKIES.get('Access-Token'), req.COOKIES.get('Refresh-Token'))
+        user_data = is_auth_user(req.headers.get('Access-Token'), req.headers.get('Refresh-Token'))
     except Exception as error:
         return response.Response({'Authentication': 'Permission Needed'},
                                  status=status.HTTP_404_NOT_FOUND)
@@ -149,7 +150,7 @@ def add_conversation(req):
 @decorators.api_view(["GET"])
 def get_convertation(req):
     try:
-        user_data = is_auth_user(req.COOKIES.get('Access-Token'), req.COOKIES.get('Refresh-Token'))
+        user_data = is_auth_user(req.headers.get('Access-Token'), req.headers.get('Refresh-Token'))
     except Exception as error:
         return response.Response({'Authentication': 'Permission Needed'},
                                  status=status.HTTP_404_NOT_FOUND)
