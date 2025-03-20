@@ -2,6 +2,7 @@
 // import { useState } from "react";
 import { getCookie } from "../utils/getCoockie";
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const FieldSection = () => {

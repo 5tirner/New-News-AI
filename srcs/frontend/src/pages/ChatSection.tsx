@@ -22,7 +22,8 @@ const ChatSection = () => {
       setIsLoading(true); 
       try {
         const botResponse = await fetchBotResponse(newMessage);
-        setMessages((prevMessages) => [...prevMessages, { text: botResponse, isUser: false }]);
+        console.log(botResponse);
+        setMessages((prevMessages) => [...prevMessages, { text: botResponse.answer, isUser: false }]);
       } catch (error) {
         console.error("Chouf Tv:", error);
         setMessages((prevMessages) => [...prevMessages, { text: "Chouf Tv.", isUser: false }]);
