@@ -75,7 +75,7 @@ async def get_tweets(searchFor, cookies, identity):
         AllTweets.sort(key=lambda x: x['created_at'], reverse=True)
         startConversation = conversations.objects.get(identity=identity)
         AllTweets[0].pop('created_at')
-        startConversation.topics[conv_id] = {f"Your Message 1": AllTweets[0]}
+        startConversation.topics[conv_id] = {f"News 1": AllTweets[0]}
         startConversation.save()
         return AllTweets[0]
     return None
@@ -112,7 +112,7 @@ async def get_google_news(params, newsurl, identity):
                 'conversation_id': conv_id
             }
             startConversation = conversations.objects.get(identity=identity)
-            startConversation.topics[conv_id] = {f"Your Message 1": theRes}
+            startConversation.topics[conv_id] = {f"News 1": theRes}
             startConversation.save()
             return theRes
         else:

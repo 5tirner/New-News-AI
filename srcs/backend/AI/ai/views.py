@@ -30,7 +30,7 @@ def getGoogleTextHelp(question):
                     soup = BeautifulSoup(page_response.text, 'html.parser')
                     paragraphs = soup.find_all('p')
                     if paragraphs:
-                        answer_text = " ".join(p.get_text(strip=True) for p in paragraphs[:3])[:500]
+                        answer_text = "".join(p.get_text(strip=True) for p in paragraphs[:3])[:500]
                         helper.append(answer_text)
                 else:
                     print(f"Failed to fetch content: Status {page_response.status_code}")
@@ -39,27 +39,6 @@ def getGoogleTextHelp(question):
         print(f'TEXT TO HEEEEEEEEEEEEEEEEELP ==> {helper}')
         return helper
     return None
-
-# def getWikiPediaHelp(question):
-#     url = "https://en.wikipedia.org/w/api.php"
-#     params = {
-#         "action": "query",
-#         "prop": "extracts",
-#         "exintro": True,
-#         "explaintext": True,
-#         "titles": question,
-#         "format": "json",
-#         "redirects": True
-#     }
-#     response = requests.get(url, params=params)
-#     if response.status_code == 200:
-#         toJeson = response.json()
-#         # page = next(iter(toJeson["query"]["pages"].values()))
-#         print("+++++++++++++++++++++++++++++++++++++++++++++++")
-#         print(toJeson)
-#         print("+++++++++++++++++++++++++++++++++++++++++++++++")
-#         return toJeson
-#     return None
 
 @decorators.api_view(['POST'])
 def chatbot(req):
@@ -83,9 +62,10 @@ def chatbot(req):
         task1 = {
             'What Is this': 'There is a conversation between you and a client\n',
             'Conversation': f"\n\n{conv}\n\n",
+            'Explanation': 'your messages appearing as: `News number: message content`, client message appearing as: `Client question number`: message content\n',
             'Step1': 'Analyze the conversation well to put youself in the context\n',
             'Step2': f'Analyze this question: {question}\n',
-            'Target': f'Based On This Things regenrate the best question to search on wikipedia and remember we are in {datetime.today().strftime('%m/%d/%Y')}\n',
+            'Target': f'Based On This Things regenrate the best question to search on Wikipidia and remember we are in {datetime.today().strftime('%m/%d/%Y')}\n',
             'Hint': f'Do not give me all the data in your answer, give me the question only\n',
         }
         # prompt = f"There is a conversation between you and a client: {conv}, your messages appearing as: `your message nbr: message content`\nanalyze this conversation well\nAfter that answer this question of this client: {question}\nsearch on web or do any thing you want the impotant is to answer the question, your free to make mistakes\nhowever if you see that the question is out of the conversation context don't generate any thing just inform me that the question is out of this conversation, go work and be samrt"
@@ -93,56 +73,57 @@ def chatbot(req):
         aires1 = aimodel.generate_content(f"Following this:{json.dumps(task1)}")
         summary1 = aires1.text.strip()
         print("Good Question: ", summary1)
-        # help = getGoogleHelp(summary1)
+
         help = getGoogleTextHelp(summary1)
         task2 = {
             'What Is this': 'There is a conversation between you and a client\n',
             'Today Date': datetime.today().strftime('%m/%d/%Y'),
             'Conversation': f"\n\n{conv}\n\n",
             'Step1': 'Analyze the conversation well to put youself in the context\n',
-            'Explanation': 'your messages appearing as: `your message nbr: message content`, client message appearing as: `client message nbr`: message content\n',
+            'Explanation': 'your messages appearing as: `News number: message content`, client message appearing as: `Client question number`: message content\n',
             'Step2': f'Analyze this question: {question}\n',
-            'Step3': f'Analyze this helper article from google: {help}\n',
+            'Step3': f'Analyze this helper article from google: {help}\nBut if the question is easy for you do not analyze them',
             'Target': f'Search on web and use the articles provided from google or do any thing to answer the question',
-            'Rule': 'Talk like you are talking this client for a while do not ay `based on the conversation` or repeat the question',
+            'Rule1': 'Talk like you are talking this client for a while do not say `based on the conversation and the things like this`',
+            'Rule2': 'Do not Repeat what you get from the conversation, make it better or do not use it',
             'Nb': 'be smart and the most important thing is to give me the answer',
         }
         print("Journalist Think of answer...")
         aires2 = aimodel.generate_content(f"Following this:{json.dumps(task2)}")
         summary2 = aires2.text.strip()
         lastIndex = len(conv.keys()) + 1
-        conv.update({f"Client Message {lastIndex}": question})
+        conv.update({f"Client Question {lastIndex}": question})
         lastIndex += 1
-        conv.update({f"Your Message {lastIndex}": summary2})
+        conv.update({f"News {lastIndex}": summary2})
         userTopics.save()
     except Exception as e:
         print(f"Error summarizing with Gemini: {e}")
         return  response.Response({'ai confused': 'AI failed to generate this content'}, status=status.HTTP_429_TOO_MANY_REQUESTS)
     return response.Response({'answer': summary2}, status=status.HTTP_200_OK)
 
-@decorators.api_view(['POST'])
-def add_conversation(req):
-    try:
-        user_data = is_auth_user(req.headers.get('Access-Token'), req.headers.get('Refresh-Token'))
-    except Exception as error:
-        return response.Response({'Authentication': 'Permission Needed'},
-                                 status=status.HTTP_404_NOT_FOUND)
-    conv_id = req.data.get('conversation_id')
-    message = req.data.get('message')
-    userTopics = conversations.objects.get(identity=user_data.identity)
-    if conv_id is None or message is None:
-        return response.Response({'conversation_id': 'required field', 'message': 'requirde field'}, status=status.HTTP_400_BAD_REQUEST)
-    theTopic = userTopics.topics.get(conv_id)
-    if theTopic is None:
-        print("New Topic")
-        userTopics.topics[conv_id] = {f"Your Message 1": message}
-    else:
-        print("Existance topic")
-        lastIndex = len(theTopic.keys()) + 1
-        theTopic.update({f"Client Message {lastIndex}": message})
-    userTopics.save()
-    print(userTopics)
-    return response.Response({'Topic': 'Updated'}, status=status.HTTP_200_OK)
+# @decorators.api_view(['POST'])
+# def add_conversation(req):
+#     try:
+#         user_data = is_auth_user(req.headers.get('Access-Token'), req.headers.get('Refresh-Token'))
+#     except Exception as error:
+#         return response.Response({'Authentication': 'Permission Needed'},
+#                                  status=status.HTTP_404_NOT_FOUND)
+#     conv_id = req.data.get('conversation_id')
+#     message = req.data.get('message')
+#     userTopics = conversations.objects.get(identity=user_data.identity)
+#     if conv_id is None or message is None:
+#         return response.Response({'conversation_id': 'required field', 'message': 'requirde field'}, status=status.HTTP_400_BAD_REQUEST)
+#     theTopic = userTopics.topics.get(conv_id)
+#     if theTopic is None:
+#         print("New Topic")
+#         userTopics.topics[conv_id] = {f"Your Message 1": message}
+#     else:
+#         print("Existance topic")
+#         lastIndex = len(theTopic.keys()) + 1
+#         theTopic.update({f"Client Message {lastIndex}": message})
+#     userTopics.save()
+#     print(userTopics)
+#     return response.Response({'Topic': 'Updated'}, status=status.HTTP_200_OK)
 
 @decorators.api_view(["GET"])
 def get_convertation(req):
@@ -157,3 +138,13 @@ def get_convertation(req):
     if conv is None:
         return response.Response({'conversation_id': 'Not Found'}, status=status.HTTP_400_BAD_REQUEST)
     return response.Response(conv, status=status.HTTP_200_OK)
+
+@decorators.api_view(['GET'])
+def getAllConversations(req):
+    try:
+        user_data = is_auth_user(req.headers.get('Access-Token'), req.headers.get('Refresh-Token'))
+    except Exception as error:
+        return response.Response({'Authentication': 'Permission Needed'},
+                                 status=status.HTTP_404_NOT_FOUND)
+    convs = conversations.objects.get(identity=user_data.identity)
+    return response.Response(convs.topics, status=status.HTTP_200_OK)

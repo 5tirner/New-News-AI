@@ -8,7 +8,6 @@ class auth_db(models.Model):
 
 class tokens_db(models.Model):
     access_token = models.CharField(max_length=10000, unique=True)
-    refresh_token = models.CharField(max_length=10000, unique=True)
     identity = models.EmailField(unique=True, null=False, primary_key=True)
 
 class verificationSystem(models.Model):

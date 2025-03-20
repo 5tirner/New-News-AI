@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 // Define types for AuthContext
 interface AuthContextType {
   isAuthenticated: boolean;
-  login:  () => void;
+  hasRegisteredFields: boolean;
+  login:  (hasFields: boolean) => void;
   logout: () => void;
 }
 
@@ -20,56 +21,71 @@ const API_URL = '/auth/api/profile';
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [hasRegisteredFields, setHasRegisteredFields] = useState<boolean>(false);
 
   console.log("i call AuthProvider() for ", children);
   
   const navigate = useNavigate();
   const {showAlert} = useAlert();
   let Access = getCookie("Access-Token");
-  let Refresh = getCookie("Refresh-Token");
 
   const checkAuth = async () => {
     console.log(`Access-Token:${Access}`);
-    console.log(`Refresh-Token:${Refresh}`);
     try {
-      const response = await fetch(API_URL, {
-        method: "GET",
-        credentials: "include",
+      if (!isAuthenticated){
+        
+        const response = await fetch(API_URL, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Token": Access
+          },
+        });
+        const json = await response.json();
+        if (!response.ok)
+          throw new Error(json);
+        setIsAuthenticated(true);
+      }
+    } catch(e) {
+      showAlert("You must be logged in to access this page.", "error");
+      setIsAuthenticated(false);
+    }
+    if (!hasRegisteredFields){
+
+      const fields = await fetch("auth/api/getUserFields", {
+        method: "GET", 
         headers: {
           "Content-Type": "application/json",
           "Access-Token": Access
         },
+        credentials: "include", 
       });
-      const json = await response.json();
-      if (!response.ok)
-        throw new Error(json);
-      setIsAuthenticated(true);
-    } catch(e) {
-      showAlert("You must be logged in to access this page.", "error");
-      if (isAuthenticated)
-        setIsAuthenticated(false);
+      if (fields.ok) {
+        setHasRegisteredFields(true);
+      } 
     }
   };
 
   useEffect(() => {
     checkAuth();
-  }, []);
+  }, [isAuthenticated, hasRegisteredFields]);
   
 
-  const login = () => {
+  const login = (hasFields: boolean) => {
       showAlert("Login successful! Welcome back.", "success");
       setIsAuthenticated(true);
+      setHasRegisteredFields(hasFields);
   };
 
   const logout = () => {
     showAlert("Logout successful. See you soon!", "success");
     setIsAuthenticated(false);
     document.cookie = "Access-Token="; // Remove token
-    document.cookie = "Refresh-Token="; // Remove token
     navigate("/");
   };
   
-  const authContextValue = { isAuthenticated, login, logout };
+  const authContextValue = { isAuthenticated, hasRegisteredFields,login, logout };
 
   return (
     <AuthContext.Provider value={authContextValue}>
