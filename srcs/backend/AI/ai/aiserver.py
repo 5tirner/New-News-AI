@@ -118,7 +118,7 @@ async def get_google_news(params, newsurl, identity):
         else:
             return None
     else:
-        print(response.status_code)
+        print(f"")
         return None
 
 class lastNews(AsyncJsonWebsocketConsumer):
