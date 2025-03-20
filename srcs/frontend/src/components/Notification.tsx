@@ -36,7 +36,7 @@ const Notification = () => {
     }, [isNotificationVisible]);
 
     return (
-        <div className="relative text-black">
+        <div className="z-99 relative text-black">
             {/* Notification Icon */}
             <div 
                 className="relative cursor-pointer"

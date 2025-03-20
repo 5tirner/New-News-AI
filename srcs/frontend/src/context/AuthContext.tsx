@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 interface AuthContextType {
   isAuthenticated: boolean;
   hasRegisteredFields: boolean;
+  setField: (hasFields: boolean) => void;
   login:  (hasFields: boolean) => void;
   logout: () => void;
 }
@@ -71,6 +72,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     checkAuth();
   }, [isAuthenticated, hasRegisteredFields]);
   
+  const setField = (hasFields: boolean) => {
+    setHasRegisteredFields(hasFields);
+  };
 
   const login = (hasFields: boolean) => {
       showAlert("Login successful! Welcome back.", "success");
@@ -85,7 +89,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     navigate("/");
   };
   
-  const authContextValue = { isAuthenticated, hasRegisteredFields,login, logout };
+  const authContextValue = { isAuthenticated, hasRegisteredFields, setField, login, logout };
 
   return (
     <AuthContext.Provider value={authContextValue}>
