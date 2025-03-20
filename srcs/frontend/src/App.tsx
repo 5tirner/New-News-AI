@@ -4,6 +4,8 @@ import { AuthProvider } from "./context/AuthContext";
 import { AlertProvider } from "./context/AlertContext";
 import AlertPopup from "./components/alert";
 import { NewsProvider } from "./context/newsContext";
+
+
 function App() {
   return (
     <AlertProvider>

@@ -1,8 +1,14 @@
 import { createContext, useContext, useState } from "react";
 
 interface NewsItem {
+  id: string;
+  from: string;
+  username: string;
+  date: string;
   title: string;
   content: string;
+  image: string | undefined;
+  url: string | undefined;
 }
 
 interface NewsContextType {

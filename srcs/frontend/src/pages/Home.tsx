@@ -13,10 +13,10 @@ import { TbLayoutNavbarExpandFilled } from "react-icons/tb";
 
 function NewsFieldsPage() {
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // const [isField, setField] = useState([]);
-  const [isField, setField] = useState<string[]>([]); // Explicitly typing the state
+  const [isField, setField] = useState<string[]>([]);
 
 
   const [isFirstVisible, setIsFirstVisible] = useState(true);
