@@ -43,7 +43,6 @@ const Verification = () => {
     } catch (error) {
 
       showAlert("The verification code does not correct.", "error");
-      console.log("Error from backend");
     }
   };
 
@@ -64,7 +63,6 @@ const Verification = () => {
       if (!response.ok)
         throw new Error("from backend ,Error status : " + response.status);
       
-      console.log("redsend verification code ...");
       showAlert("The verification code sended successfully!", "success");
     } catch(e) {
       showAlert("An unexpected error occurred. Please try again later.", "error");

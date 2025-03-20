@@ -15,11 +15,6 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const socketRef = useRef<WebSocket | null>(null);
   const [isConnecting, setIsConnecting] = useState<boolean>(false);
   const reconnectTimeoutRef = useRef<number | null>(null);
-
-
-  useEffect(() => {
-    console.log("🔄 Auth state updated:", isAuthenticated);
-  }, [isAuthenticated]);
   
   
   const connectWebSocket = () => {
@@ -30,10 +25,7 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
     try {
       socketRef.current = new WebSocket(WS_URL);
       
-      socketRef.current.onopen = () => {
-        console.log("✅ WebSocket connected successfully");
-        // setIsConnecting(false);
-      };
+
 
       socketRef.current.onmessage = (e) => {
         try {
@@ -58,12 +50,10 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
       };
 
       socketRef.current.onclose = (event) => {
-        console.log(`🔴 WebSocket closed with code: ${event.code}`);
         setIsConnecting(false);
         
         // Attempt to reconnect unless this was a normal closure
         if (event.code !== 1000 && isAuthenticated) {
-          console.log(`🔄 Attempting to reconnect in ${RECONNECT_INTERVAL/1000} seconds...`);
           reconnectTimeoutRef.current = window.setTimeout(connectWebSocket, RECONNECT_INTERVAL);
         }
       };
@@ -73,7 +63,6 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
         // Let onclose handle reconnection
       };
     } catch (error) {
-      console.error("Failed to establish WebSocket connection:", error);
       setIsConnecting(false);
       
       // Attempt to reconnect
@@ -85,7 +74,6 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
     if (isAuthenticated && hasRegisteredFields) {
       connectWebSocket();
     } else if (socketRef.current) {
-      console.log("🔴 Closing WebSocket due to authentication state change");
       socketRef.current.close();
       socketRef.current = null;
       
@@ -109,13 +97,8 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
     };
   }, [isAuthenticated, hasRegisteredFields]);
 
-  useEffect(() => {
-    console.log("News : ", news);
-  }, [news])
 
-  if (!isAuthenticated) {
-    console.log("🔴 you dont authenticated 🔴");
-  
+  if (!isAuthenticated) {  
     return <Navigate to="/login" replace />;
   }
 

@@ -23,8 +23,7 @@ const AppRouter = () => {
         {/* Protected Routes */}
         <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
         <Route path="/news" element={<ProtectedRoute><NewsPage /></ProtectedRoute>} /> 
-        {/* <Route path="/journalist" element={<ProtectedRoute><ChatSection /></ProtectedRoute>} /> */}
-        <Route path="/journalist" element={<ChatSection/>}/>
+        <Route path="/journalist" element={<ProtectedRoute><ChatSection/></ProtectedRoute>}/>
         <Route path="/field" element={<ProtectedRoute><FieldSection /></ProtectedRoute>} />
         
         {/* Public Routes */}
