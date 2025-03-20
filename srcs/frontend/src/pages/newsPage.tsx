@@ -2,17 +2,42 @@ import { useNews } from "../context/newsContext";
 
 const NewsPage = ({ setIsFirstVisible }: { setIsFirstVisible: (visible: boolean) => void }) => {
   const { news, removeNews } = useNews();
+  
+  // const { news, removeNews } = useNews() || { news: [], removeNews: () => {} };
 
+  // const news = [
+  //   {
+  //     title: "Breaking: Tech Innovation 2025",
+  //     content: "A new wave of AI-driven applications is set to revolutionize the industry.",
+  //   },
+  //   {
+  //     title: "Global Markets Rally",
+  //     content: "Stock markets show strong growth as investors regain confidence.",
+  //   },
+  //   {
+  //     title: "Climate Change Updates",
+  //     content: "Scientists warn of rising temperatures and call for urgent action.",
+  //   },
+  //   {
+  //     title: "Climate Change Updates",
+  //     content: "Scientists warn of rising temperatures and call for urgent action.",
+  //   },
+  //   {
+  //     title: "Climate Change Updates",
+  //     content: "Scientists warn of rising temperatures and call for urgent action.",
+  //   },
+  // ];
+  
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen w-[80%]">
       {/* Main Section */}
       <main className="p-10 text-center">
         <h2 className="text-3xl font-bold">Find Your News Easily</h2>
         <p className="text-gray-600 mt-2">What’s new?</p>
 
         {/* News Cards */}
-        <div className="w-[100%] min-h-96 mt-8 flex flex-wrap gap-6 items-center justify-center border-2 border-black ">
-          {news.length > 0 ? (
+        <div className="w-[100%] min-h-96 max-h-[100px] mt-8 flex flex-col gap-6 items-center justify-start overflow-y-auto ">
+        {news.length > 0 ? (
             news.map((newsItem, index) => (
               <div
                 key={index}
