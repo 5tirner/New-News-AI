@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { getCookie } from "../utils/getCoockie";
+import Sidebar from "../components/Sidebar";
+
 
 
 const ChatSection = () => {
@@ -12,10 +14,10 @@ const ChatSection = () => {
   const [isLoading, setIsLoading] = useState(false); // Loading state for bot response
   const newsItem = location.state?.newsItem || "";
 
-
+  // if (event.key === "Enter" && message.trim())
   console.log("Chat Bot Items : ", newsItem);
-  const handleSendMessage = async () => {
-    if (newMessage.trim() !== "") {
+  const handleSendMessage = async (e) => {
+    if (e.key === "Enter" && newMessage.trim() !== "") {
       const userMessage = { text: newMessage, isUser: true };
       setMessages((prevMessages) => [...prevMessages, userMessage]);
       setNewMessage("");
@@ -53,12 +55,13 @@ const ChatSection = () => {
 
   return (
     <>
+    <div className="p-5 min-h-screen">
       <div className="w-[100%] text-right">
-        <button className="bg-gray-200  w-[5%]  text-black shadow-[2px_2px_0px_rgba(0,0,0,1)] border border-black" onClick={() => navigate(-1)} >Back</button>
+        <button className="bg-gray-200  w-[5%]  text-black shadow-[2px_2px_0px_rgba(0,0,0,1)]" onClick={() => navigate(-1)} >Back</button>
       </div>
-      <div className="h-full w-full flex flex-col items-center justify-end gap-5">
+      <div className=" md:h-64 lg:h-96 w-full flex flex-col items-center justify-end gap-5 ">
 
-        <div className="w-[84%] flex flex-col gap-2 items-center justify-center">
+        <div className="w-[84%] flex flex-col gap-2 items-center justify-center overflow-y-auto">
           {messages.map((message, index) => (
             <div
               key={index}
@@ -76,6 +79,7 @@ const ChatSection = () => {
           <input
             type="text"
             value={newMessage}
+            onKeyDown={handleSendMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder="Type a message..."
             className="w-[70%] p-2 border border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] "
@@ -89,6 +93,8 @@ const ChatSection = () => {
           </button>
         </div>
       </div>
+
+    </div>
     </>
   );
 };

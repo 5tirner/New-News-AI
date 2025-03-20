@@ -13,7 +13,7 @@ const NewsPage = () => {
         <p className="text-gray-600 mt-2">What’s new?</p>
 
         {/* News Cards */}
-        <div className="border border-border w-full md:h-64 lg:h-96 mt-8 flex flex-col gap-6 items-center justify-start overflow-y-auto ">
+        <div className=" w-full md:h-64 lg:h-96 mt-8 flex flex-col gap-6 items-center justify-start overflow-y-auto ">
         {news.length > 0 ? (
             news.map((newsItem, index) => (
               <div
