@@ -7,26 +7,17 @@ from .isStrong import validate_passwd
 import bcrypt, string, random
 from ai.models import conversations
 
-def is_auth_user(access_token, refresh_token):
+def is_auth_user(access_token, refresh_token=""):
     try:
         user_data = tokens_db.objects.get(access_token=access_token)
         return user_data
     except:
-        try:
-            refresh = tokens_db.objects.get(refresh_token=refresh_token)
-            refresh.access_token = ''.join(random.choices(
-                string.ascii_uppercase + string.ascii_lowercase + string.digits, k=100))
-            refresh.save()
-            return refresh
-        except:
-            raise Exception("")
+        raise Exception("")
 
 def generate_tokens(email):
     access_token = ''.join(random.choices
                            (string.digits + string.ascii_uppercase + string.ascii_lowercase, k=100))
-    refresh_token = ''.join(random.choices
-                           (string.digits + string.ascii_uppercase + string.ascii_lowercase, k=100))
-    return {'identity': email, 'access_token': access_token, 'refresh_token': refresh_token}
+    return {'identity': email, 'access_token': access_token}
 
 @decorators.api_view(["POST"])
 def signup(req):
@@ -106,11 +97,17 @@ def signin(req):
                                      status=status.HTTP_401_UNAUTHORIZED)
         if bcrypt.checkpw(password, user.password.encode('ASCII')):
             user_tokens = tokens_db.objects.get(identity=email)
+            isAvailable = False
+            try:
+                userFields.objects.get(identity=email)
+                isAvailable = True
+            except:
+                pass
             return response.Response(
                 {
                     'active_user': user.activation,
                     'Access-Token': user_tokens.access_token,
-                    'Refresh-Token': user_tokens.refresh_token
+                    'isSelectFields': isAvailable
                 }, status=status.HTTP_200_OK)
     except:
         pass

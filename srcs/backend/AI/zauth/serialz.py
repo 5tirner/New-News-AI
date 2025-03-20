@@ -9,7 +9,7 @@ class auth_db_serial(ModelSerializer):
 class tokens_db_serial(ModelSerializer):
     class Meta:
         model = tokens_db
-        fields = ['access_token', 'refresh_token', 'identity']
+        fields = ['access_token', 'identity']
 
 class verify_serializer(ModelSerializer):
     class Meta:
