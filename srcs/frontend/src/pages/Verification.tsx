@@ -9,6 +9,7 @@ const Verification = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const email = location.state?.email || "";
+  const password = location.state?.password || "";
   const [code, setCode] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -46,6 +47,30 @@ const Verification = () => {
     }
   };
 
+  const handleResend = async (e) => {
+    e.preventDefault();
+    // Add sign-up logic here
+    try {
+      const response = await fetch('/auth/api/signup', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          'email' : email,
+          'password' : password
+        })
+      });
+      if (!response.ok)
+        throw new Error("from backend ,Error status : " + response.status);
+      
+      console.log("redsend verification code ...");
+      showAlert("The verification code sended successfully!", "success");
+    } catch(e) {
+      showAlert("An unexpected error occurred. Please try again later.", "error");
+    }
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#f6f2e7] p-4">
       <div className="w-full max-w-md bg-white p-6 border border shadow-[2px_2px_0px_rgba(0,0,0,1)] ">
@@ -79,7 +104,7 @@ const Verification = () => {
         </form>
 
         <p className="text-center text-sm text-gray-600 mt-4">
-          Didn't receive a code? <a href="/resend-code" className="text-blue-500">Resend Code</a>
+          Didn't receive a code? <span className="text-blue-500" onClick={handleResend}>Resend Code</span>
         </p>
       </div>
     </div>

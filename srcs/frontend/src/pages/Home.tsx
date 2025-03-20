@@ -1,5 +1,6 @@
 
 import { useState , useEffect} from "react";
+import { getCookie } from "../utils/getCoockie";
 // import FieldSection from "./FieldPage";
 import NewsPage from "./newsPage";
 import ChatSection from "./ChatSection";
@@ -12,11 +13,13 @@ import { TbLayoutNavbarExpandFilled } from "react-icons/tb";
 
 
 function NewsFieldsPage() {
+  
+  let Access = getCookie("Access-Token");
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // const [isField, setField] = useState([]);
-  const [isField, setField] = useState<string[]>([]); // Explicitly typing the state
+  const [isField, setField] = useState<string[]>([]);
 
 
   const [isFirstVisible, setIsFirstVisible] = useState(true);
@@ -28,6 +31,7 @@ function NewsFieldsPage() {
           method: "GET", 
           headers: {
             "Content-Type": "application/json",
+            "Access-Token": Access
           },
           credentials: "include", 
         });

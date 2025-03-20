@@ -1,9 +1,13 @@
 
 // import { useState } from "react";
+import { getCookie } from "../utils/getCoockie";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const FieldSection = () => {
+
+    console.log("i am in field page (^_^)");
+    let Access = getCookie("Access-Token");
     const [selectedFields, setSelectedFields] = useState([]);
     const navigate = useNavigate();
 
@@ -16,13 +20,16 @@ const FieldSection = () => {
     };
 
     const handleSubmit = async () => {
-        console.log(JSON.stringify({ fields: selectedFields }))
+        console.log("Fields :", JSON.stringify({ fields: selectedFields }))
         // navigate("/home");
 
         try {
             const response = await fetch("/auth/api/fields", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Access-Token": Access
+                },
                 credentials: 'include',
                 body: JSON.stringify({ fields: selectedFields })
             });

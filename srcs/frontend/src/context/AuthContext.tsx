@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useEffect, useMemo } from "react";
 import { getCookie } from "../utils/getCoockie";
 import { useAlert } from "./AlertContext";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 // Define types for AuthContext
 interface AuthContextType {
   isAuthenticated: boolean;
-  login: () => void;
+  login:  () => void;
   logout: () => void;
 }
 
@@ -15,26 +15,29 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const API_URL = '/auth/api/profile';
 
+
 // AuthProvider Component
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+
+  console.log("i call AuthProvider() for ", children);
+  
   const navigate = useNavigate();
   const {showAlert} = useAlert();
   let Access = getCookie("Access-Token");
   let Refresh = getCookie("Refresh-Token");
 
-  console.log(`${Access}, ${Refresh}`);
-  
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
-    Access !== null || Refresh !== null  // Check if user is logged in
-  );
-
   const checkAuth = async () => {
+    console.log(`Access-Token:${Access}`);
+    console.log(`Refresh-Token:${Refresh}`);
     try {
       const response = await fetch(API_URL, {
         method: "GET",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
+          "Access-Token": Access
         },
       });
       const json = await response.json();
@@ -42,16 +45,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         throw new Error(json);
       setIsAuthenticated(true);
     } catch(e) {
-      setIsAuthenticated(false);
-      console.log(e.message);
+      showAlert("You must be logged in to access this page.", "error");
+      if (isAuthenticated)
+        setIsAuthenticated(false);
     }
   };
 
-  checkAuth();
+  useEffect(() => {
+    checkAuth();
+  }, []);
+  
 
   const login = () => {
-    showAlert("Login successful! Welcome back.", "success");
-    setIsAuthenticated(true);
+      showAlert("Login successful! Welcome back.", "success");
+      setIsAuthenticated(true);
   };
 
   const logout = () => {
@@ -61,9 +68,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     document.cookie = "Refresh-Token="; // Remove token
     navigate("/");
   };
+  
+  const authContextValue = { isAuthenticated, login, logout };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={authContextValue}>
       {children}
     </AuthContext.Provider>
   );

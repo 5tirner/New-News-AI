@@ -1,14 +1,12 @@
 import axios from "axios";
 
-// const API_URL = '';
-
-export const getTeams = async () => {
-  const response = await axios.get(`/teams/`);
+export const getFields = async () => {
+  const response = await axios.get(`/auth/api//fields/`);
   return response.data;
 };
 
-export const getTournaments = async () => {
-  const response = await axios.get(`/tournaments/`);
+export const getNews = async () => {
+  const response = await axios.get(`/ai/api//news/`);
   return response.data;
 };
 
