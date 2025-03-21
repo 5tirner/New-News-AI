@@ -63,7 +63,9 @@ const Sidebar = () => {
 
   const handleHistoryClick = (conversationId) => {
     console.log("Selected conversation ID:", conversationId);
-    navigate(`/Journalist`); 
+    navigate(`/Journalist/${conversationId}`, {
+      state: { newsItem: conversationId }, // Pass conversationId as newsItem
+    });
   
   };
 

@@ -2,24 +2,30 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { getCookie } from "../utils/getCoockie";
 import Sidebar from "../components/Sidebar";
-// import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 
 
 const ChatSection = () => {
-  // const { conversationId } = useParams();
+  const { conversationId } = useParams();
   const Access = getCookie("Access-Token");
   const navigate = useNavigate();
   const location = useLocation();
   const [messages, setMessages] = useState<{ text: string; isUser: boolean }[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false); // Loading state for bot response
-  const newsItem = location.state?.newsItem || "";
-  // const effectiveConversationId = conversationId || location.state?.newsItem.id || "";
-
+  const idd = location.state?.newsItem || "";
+  const effectiveConversationId = conversationId ;
 
   // if (event.key === "Enter" && message.trim())
-  // console.log("Chat Bot Items : ", newsItem);
+  let newsItem;
+  if (!idd.id){
+    newsItem = effectiveConversationId;
+  }else{
+    newsItem = idd.id;
+  }
+  console.log('this is id : ' + effectiveConversationId , idd.id)
+  // console.log("Chat Bot Items : ", newsItem.id);
   const handleSendMessage = async (e) => {
     if (e.key === "Enter" && newMessage.trim() !== "") {
       const userMessage = { text: newMessage, isUser: true };
@@ -67,11 +73,11 @@ const ChatSection = () => {
           </div>
           <div className=" md:h-64 lg:h-96 w-full flex flex-col items-center justify-end gap-5 ">
 
-            <div className="w-[84%] flex flex-col gap-2 items-center justify-center overflow-y-auto">
+            <div className="w-[70%] flex flex-col gap-2 items-center justify-center overflow-y-auto border-2 border-black">
               {messages.map((message, index) => (
                 <div
                   key={index}
-                  className={`w-[100%] p-2 border-black border shadow-[2px_2px_0px_rgba(0,0,0,1)]  ${message.isUser ? "bg-[#F5E6CF] self-end" : "bg-gray-200 self-start"
+                  className={`w-[60%] p-2 border-black border shadow-[2px_2px_0px_rgba(0,0,0,1)]  ${message.isUser ? "bg-[#F5E6CF] self-end" : "bg-gray-200 self-start"
                     }`}
                 >
                   <p className={message.isUser ? "text-right" : "text-left"}>
