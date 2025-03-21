@@ -9,7 +9,7 @@ const Navbar = () => {
   const { logout } = useAuth();
   const location = useLocation(); // Get current location
 
-  const isHome = location.pathname === "/home";
+  const isHome = location.pathname === "/home" || location.pathname === "/journalist";
 
   return (
     <nav className="static top-0 left-0 bg-[#F5E6CF] p-4 border-b border-[#DDBD8A]">

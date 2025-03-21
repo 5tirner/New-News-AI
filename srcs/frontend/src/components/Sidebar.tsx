@@ -49,7 +49,7 @@ const Sidebar = () => {
         const historyData = await historyResponse.json();
         const historyItems = Object.entries(historyData).map(([convId, convData]) => ({
           id: convId,
-          title: convData.title
+          title: convData.title,
         }));
         
         setHistory(historyItems);
@@ -90,7 +90,7 @@ const Sidebar = () => {
             ))}
           </ul>
           <h2 className="font-bold mt-4">History</h2>
-          <div className="max-h-full overflow-y-auto">
+          <div className="max-h-[500px] overflow-y-auto">
             <ul>
               {history.length > 0 ? (
                 history.map((item, index) => (
@@ -99,7 +99,7 @@ const Sidebar = () => {
                     onClick={() => handleHistoryClick(item.id)}
                     className="mt-3 text-center border border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] h-8 w-full rounded flex items-center justify-center cursor-pointer hover:bg-gray-100"
                   >
-                    {item.title}
+                    {item.title.slice(0,10) + '...'}
                   </li>
                 ))
               ) : (
