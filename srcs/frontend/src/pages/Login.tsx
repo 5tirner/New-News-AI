@@ -19,7 +19,6 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Logging in with", { email, password });
     setIsLoading(true);
 
     // Add login logic here
@@ -46,7 +45,6 @@ const Login = () => {
       }
 
       document.cookie = `Access-Token=${json["Access-Token"]}`;
-      console.log("✅ Login successful, waiting for state update...");
 
 
       login(json["isSelectFields"]);
@@ -60,7 +58,6 @@ const Login = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      console.log("🚀 Redirecting to /field because user is authenticated");
       if (hasRegisteredFields)
         navigate("/home");
       else

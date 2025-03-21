@@ -140,7 +140,7 @@ class lastNews(AsyncJsonWebsocketConsumer):
     }
     newsapikey = settings.NEWS_API
     newsurl = settings.NEWS_URL
-    delay = 60
+    delay = 120
     
     async def connect(self):
         print(f"The Fileds {self.scope.get('fields')}")

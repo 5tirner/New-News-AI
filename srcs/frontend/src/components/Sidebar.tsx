@@ -71,11 +71,11 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`${isSidebarOpen ? "w-64 bg-[#F5E6CF]" : "w-1 bg-[#fdfbee]"} transition-all duration-300 p-4 flex flex-col`}
+      className={`${isSidebarOpen ? "z-50 w-64 bg-[#F5E6CF]" : "w-1 bg-[#fdfbee]"} transition-all duration-300 p-4 flex flex-col`}
     >
       <button
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="text-white p-2 rounded text-right"
+        className="z-50 text-white p-2 rounded text-right"
       >
         {isSidebarOpen ? (
           <TbLayoutNavbarCollapseFilled style={{ transform: 'rotate(-90deg)' }} size={30} color="gray" />
@@ -93,7 +93,7 @@ const Sidebar = () => {
             ))}
           </ul>
           <h2 className="font-bold mt-4">History</h2>
-          <div className="max-h-40 overflow-y-auto">
+          <div className="max-h-full overflow-y-auto">
             <ul>
               {history.length > 0 ? (
                 history.map((item, index) => (

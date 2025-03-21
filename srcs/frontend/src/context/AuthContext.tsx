@@ -24,14 +24,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [hasRegisteredFields, setHasRegisteredFields] = useState<boolean>(false);
 
-  console.log("i call AuthProvider() for ", children);
   
   const navigate = useNavigate();
   const {showAlert} = useAlert();
   let Access = getCookie("Access-Token");
 
   const checkAuth = async () => {
-    console.log(`Access-Token:${Access}`);
     try {
       if (!isAuthenticated){
         
