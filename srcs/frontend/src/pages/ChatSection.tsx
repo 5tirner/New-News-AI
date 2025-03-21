@@ -2,21 +2,28 @@ import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { getCookie } from "../utils/getCoockie";
 import Sidebar from "../components/Sidebar";
-// import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 
 
 const ChatSection = () => {
-  // const { conversationId } = useParams();
+  const { conversationId } = useParams();
   const Access = getCookie("Access-Token");
   const navigate = useNavigate();
   const location = useLocation();
   const [messages, setMessages] = useState<{ text: string; isUser: boolean }[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false); // Loading state for bot response
-  const newsItem = location.state?.newsItem || "";
+  const idd = location.state?.newsItem || "";
 
+  console.log('this is id : ' + conversationId , idd.id)
 
+  let newsItem;
+  if (idd.id) {
+    newsItem = idd.id; // Use idd.id if available
+  } else {
+    newsItem = conversationId; // Fallback to effectiveConversationId
+  }
   const handleSendMessage = async (e) => {
     if (e.key === "Enter" && newMessage.trim() !== "") {
       const userMessage = { text: newMessage, isUser: true };
@@ -56,13 +63,13 @@ const ChatSection = () => {
     <>
       <div className="min-h-screen flex flex-row bg-[#fdfbee]">
         <Sidebar/>
-        <div className="fixed  top-0 py-24 px-10 left-0 h-dvh w-full">
-          <div className="w-full text-right">
-            <button className="bg-gray-200 w-[5%] left-6 top-6 text-black shadow-[2px_2px_0px_rgba(0,0,0,1)]" onClick={() => navigate(-1)} >Back</button>
+        <div className="fixed w-[100%] h-[100%] p-5 border-2 border-black flex flex-col items-center justify-center ">
+          <div className="w-[100%] text-right">
+            <button className="bg-gray-200  w-[5%]  text-black shadow-[2px_2px_0px_rgba(0,0,0,1)]" onClick={() => navigate(-1)} >Back</button>
           </div>
-          <div className="min-h-[85vh] w-full flex flex-col items-center justify-between gap-5 ">
+          <div className=" md:h-64 lg:h-96 w-[50%] flex flex-col items-center justify-center gap-5 ">
 
-            <div className="w-[84%] flex flex-col gap-2 items-center justify-center overflow-y-auto">
+            <div className="w-[100%] flex flex-col gap-2 items-center justify-center overflow-y-auto">
               {messages.map((message, index) => (
                 <div
                   key={index}
@@ -76,17 +83,17 @@ const ChatSection = () => {
               ))}
               {isLoading && <p className="text-gray-500 italic"> Journalist is typing...</p>}
             </div>
-            <div className="w-full h-[10%] flex gap-5 items-center justify-center">
+            <div className=" w-full h-[10%] flex gap-5 items-center justify-center border-black border shadow-[2px_2px_0px_rgba(0,0,0,1)] ">
               <input
                 type="text"
                 value={newMessage}
                 onKeyDown={handleSendMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
                 placeholder="Type a message..."
-                className="w-[70%] p-2 border border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] "
+                className="w-[80%] p-2 h-[100%] focus:outline-none hover:border-transparent"
               />
               <button
-                className="border border-black size-fit w-[5%] shadow-[2px_2px_0px_rgba(0,0,0,1)]"
+                className="border border-black size-fit w-[10%] shadow-[2px_2px_0px_rgba(0,0,0,1)]"
                 onClick={handleSendMessage}
                 disabled={isLoading} // Disable button when bot is responding
               >
@@ -99,5 +106,6 @@ const ChatSection = () => {
     </>
   );
 };
+
 
 export default ChatSection;

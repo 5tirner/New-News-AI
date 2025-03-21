@@ -62,9 +62,10 @@ const Sidebar = () => {
   }, []);
 
   const handleHistoryClick = (conversationId) => {
-    navigate(`/Journalist`);   
-  };
-
+    navigate(`/Journalist/${conversationId}`, {
+      state: { newsItem: conversationId }, // Pass conversationId as newsItem
+    }); 
+   };
   return (
     <div
       className={`${isSidebarOpen ? "z-50 w-64 bg-[#F5E6CF]" : "w-1 bg-[#fdfbee]"} transition-all duration-300 p-4 flex flex-col`}

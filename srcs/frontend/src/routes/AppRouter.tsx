@@ -17,25 +17,32 @@ const NotFound = lazy(() => import("../pages/NotFound"));
 
 const AppRouter = () => {
   return (
-    <Suspense fallback={<div className="flex justify-center items-center h-screen"><LoadingSpinner /></div>}>
-      <Routes>
-        
-        {/* Protected Routes */}
-        <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
-        <Route path="/news" element={<ProtectedRoute><NewsPage /></ProtectedRoute>} /> 
-        <Route path="/journalist" element={<ProtectedRoute><ChatSection/></ProtectedRoute>}/>
-        <Route path="/field" element={<ProtectedRoute><FieldSection /></ProtectedRoute>} />
-        
-        {/* Public Routes */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<ProtectedLogin><SignUp /></ProtectedLogin>} />
-        <Route path="/verify" element={<ProtectedLogin><Verification /></ProtectedLogin>} />
-        <Route path="/" element={<FirstPage />} />
+    <>
+      <Suspense fallback={<div className="flex justify-center items-center h-screen"><LoadingSpinner /></div>}>
+        <Routes>
+          {/* Protected Routes */}
+          <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+          <Route path="/news" element={<ProtectedRoute><NewsPage /></ProtectedRoute>} />
+          {/* Match exact /journalist */}
+          <Route path="/journalist" element={<ProtectedRoute><ChatSection /></ProtectedRoute>} />
+          {/* Match /Journalist/:conversationId with dynamic parameter */}
+          <Route 
+            path="/Journalist/:conversationId" 
+            element={<ProtectedRoute><ChatSection /></ProtectedRoute>} 
+          />
+          <Route path="/field" element={<ProtectedRoute><FieldSection /></ProtectedRoute>} />
 
-        {/* 404 page */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Suspense>
+          {/* Public Routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<ProtectedLogin><SignUp /></ProtectedLogin>} />
+          <Route path="/verify" element={<ProtectedLogin><Verification /></ProtectedLogin>} />
+          <Route path="/" element={<FirstPage />} />
+
+          {/* 404 Catch-All Route */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
+    </>
   );
 };
 
