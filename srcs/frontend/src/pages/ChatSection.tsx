@@ -34,9 +34,11 @@ const ChatSection = () => {
       setIsLoading(true);
       try {
         const botResponse = await fetchBotResponse(newMessage);
+        console.log(botResponse);
         setMessages((prevMessages) => [...prevMessages, { text: botResponse.answer, isUser: false }]);
       } catch (error) {
-        setMessages((prevMessages) => [...prevMessages, { text: "please check your connection!", isUser: false }]);
+        console.error("Chouf Tv:", error);
+        setMessages((prevMessages) => [...prevMessages, { text: "Chouf Tv.", isUser: false }]);
       } finally {
         setIsLoading(false);
       }
@@ -65,17 +67,17 @@ const ChatSection = () => {
     <>
       <div className="min-h-screen flex flex-row bg-[#fdfbee]">
         <Sidebar/>
-        <div className="fixed  top-0 py-24 px-10 left-0 h-dvh w-full">
-          <div className="w-full text-right">
-            <button className="bg-gray-200 w-[5%] left-6 top-6 text-black shadow-[2px_2px_0px_rgba(0,0,0,1)]" onClick={() => navigate(-1)} >Back</button>
+        <div className="w-[100%] p-5 border-2 border-black flex flex-col items-center justify-center ">
+          <div className="w-[100%] text-right">
+            <button className="bg-gray-200  w-[5%]  text-black shadow-[2px_2px_0px_rgba(0,0,0,1)]" onClick={() => navigate(-1)} >Back</button>
           </div>
-          <div className="min-h-[85vh] w-full flex flex-col items-center justify-between gap-5 ">
+          <div className=" md:h-64 lg:h-96 w-[50%] flex flex-col items-center justify-center gap-5 ">
 
-            <div className="w-[70%] flex flex-col gap-2 items-center justify-center overflow-y-auto border-2 border-black">
+            <div className="w-[100%] flex flex-col gap-2 items-center justify-center overflow-y-auto">
               {messages.map((message, index) => (
                 <div
                   key={index}
-                  className={`w-[60%] p-2 border-black border shadow-[2px_2px_0px_rgba(0,0,0,1)]  ${message.isUser ? "bg-[#F5E6CF] self-end" : "bg-gray-200 self-start"
+                  className={`w-[100%] p-2 border-black border shadow-[2px_2px_0px_rgba(0,0,0,1)]  ${message.isUser ? "bg-[#F5E6CF] self-end" : "bg-gray-200 self-start"
                     }`}
                 >
                   <p className={message.isUser ? "text-right" : "text-left"}>
@@ -85,17 +87,17 @@ const ChatSection = () => {
               ))}
               {isLoading && <p className="text-gray-500 italic"> Journalist is typing...</p>}
             </div>
-            <div className="w-full h-[10%] flex gap-5 items-center justify-center">
+            <div className=" w-full h-[10%] flex gap-5 items-center justify-center border-black border shadow-[2px_2px_0px_rgba(0,0,0,1)] ">
               <input
                 type="text"
                 value={newMessage}
                 onKeyDown={handleSendMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
                 placeholder="Type a message..."
-                className="w-[70%] p-2 border border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] "
+                className="w-[80%] p-2 h-[100%] focus:outline-none hover:border-transparent"
               />
               <button
-                className="border border-black size-fit w-[5%] shadow-[2px_2px_0px_rgba(0,0,0,1)]"
+                className="border border-black size-fit w-[10%] shadow-[2px_2px_0px_rgba(0,0,0,1)]"
                 onClick={handleSendMessage}
                 disabled={isLoading} // Disable button when bot is responding
               >

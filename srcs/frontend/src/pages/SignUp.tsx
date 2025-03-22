@@ -55,7 +55,7 @@ const SignUp = () => {
         <h2 className="text-2xl font-semibold text-center mb-6">Sign Up</h2>
         
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
+          {/* <div>
             <label className="block text-sm font-medium text-gray-700">Full Name</label>
             <input
               type="text"
@@ -64,7 +64,7 @@ const SignUp = () => {
               className="w-full mt-1 p-2 border border-gray-300  border-2 border-black  shadow-[4px_4px_0px_rgba(0,0,0,1)] focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
-          </div>
+          </div> */}
           
           <div>
             <label className="block text-sm font-medium text-gray-700">Email</label>

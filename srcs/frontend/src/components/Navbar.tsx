@@ -12,7 +12,7 @@ const Navbar = () => {
   const isHome = location.pathname === "/home";
 
   return (
-    <nav className="static top-0 left-0 bg-[#F5E6CF] p-4 border-b border-[#DDBD8A]">
+    <nav className=" z-50 w-full top-0 left-0 bg-[#F5E6CF] p-4 border-b border-[#DDBD8A]">
       <div className="container flex justify-between text-white">
         <h1 className="text-xl font-bold text-black">Journalist</h1>
         
@@ -23,11 +23,11 @@ const Navbar = () => {
             </div>
             <div className="icons space-x-4 flex">
               <Notification />
-              <CiLogout 
+              {/* <CiLogout 
                 size={30}
                 color="gray"
                 onClick={logout}
-              />
+              /> */}
             </div>
           </>
         ) : (
