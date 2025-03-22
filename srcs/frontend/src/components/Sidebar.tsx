@@ -91,7 +91,7 @@ const Sidebar = () => {
         <div className="p-3 flex justify-end">
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="p-2 rounded hover:bg-gray-300 transition-colors border-4 border-gray-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.6)]"
+            className="p-2 rounded hover:bg-gray-300 transition-colors border-4 border-gray-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.6)] w-10 h-10 flex items-center justify-center"
             aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
           >
             {isSidebarOpen ? (
@@ -102,61 +102,70 @@ const Sidebar = () => {
           </button>
         </div>
 
-        {/* Main navigation buttons */}
-        <div className="flex flex-col h-[calc(100%-110px)] px-2 mt-2">
-          {/* Fields button */}
-          <button 
-            onClick={() => setActiveSection('fields')}
-            className={`
-              flex items-center px-4 py-3 mb-2
-              border-4 border-gray-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.6)]
-              rounded-lg transition-all duration-200
-              ${activeSection === 'fields' ? 'bg-white' : 'bg-gray-100 hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.6)]'}
-            `}
-          >
-            <MdCategory size={20} className="text-gray-800" />
-            {isSidebarOpen && <span className="ml-3 font-bold uppercase text-gray-800">Fields</span>}
-          </button>
-          
-          {/* History button */}
-          <button 
-            onClick={() => setActiveSection('history')}
-            className={`
-              flex items-center px-4 py-3 mb-2
-              border-4 border-gray-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.6)]
-              rounded-lg transition-all duration-200
-              ${activeSection === 'history' ? 'bg-white' : 'bg-gray-100 hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.6)]'}
-            `}
-          >
-            <BiHistory size={20} className="text-gray-800" />
-            {isSidebarOpen && <span className="ml-3 font-bold uppercase text-gray-800">History</span>}
-          </button>
+        {/* Content container with fixed height */}
+        <div className="flex flex-col flex-grow px-2 mt-2 overflow-hidden">
+          {/* Navigation buttons */}
+          <div className="flex-shrink-0">
+            {/* Fields button */}
+            <button 
+              onClick={() => setActiveSection('fields')}
+              className={`
+                flex items-center ${isSidebarOpen ? "px-4" : "justify-center"} py-3 mb-2
+                border-4 border-gray-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.6)]
+                rounded-lg transition-all duration-200 w-full
+                ${activeSection === 'fields' ? 'bg-white' : 'bg-gray-100 hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.6)]'}
+              `}
+            >
+              <div className="flex items-center justify-center min-w-[20px]">
+                <MdCategory size={20} className="text-gray-800" />
+              </div>
+              {isSidebarOpen && <span className="ml-3 font-bold uppercase text-gray-800">Fields</span>}
+            </button>
+            
+            {/* History button */}
+            <button 
+              onClick={() => setActiveSection('history')}
+              className={`
+                flex items-center ${isSidebarOpen ? "px-4" : "justify-center"} py-3 mb-2
+                border-4 border-gray-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.6)]
+                rounded-lg transition-all duration-200 w-full
+                ${activeSection === 'history' ? 'bg-white' : 'bg-gray-100 hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.6)]'}
+              `}
+            >
+              <div className="flex items-center justify-center min-w-[20px]">
+                <BiHistory size={20} className="text-gray-800" />
+              </div>
+              {isSidebarOpen && <span className="ml-3 font-bold uppercase text-gray-800">History</span>}
+            </button>
+          </div>
 
-          {/* Content section based on active section */}
+          {/* Content section with fixed height */}
           {isSidebarOpen && (
-            <div className="flex-grow overflow-hidden mt-2 border-4 border-gray-800 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.6)] rounded-lg bg-white">
+            <div className="h-full max-h-[calc(100vh-240px)] mt-2 border-4 border-gray-800 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.6)] rounded-lg bg-white flex flex-col overflow-hidden">
               {activeSection === 'fields' && (
-                <div className="p-4 overflow-y-auto h-full">
-                  <h2 className="font-bold text-sm sm:text-base border-b-4 border-gray-400 pb-2 mb-3 uppercase text-gray-800">Your Fields</h2>
-                  <ul className="space-y-2">
-                    {isField.length > 0 ? (
-                      isField.map((field, index) => (
-                        <li key={index} className="flex items-center">
-                          <span className="w-2 h-2 bg-gray-800 rounded-full mr-2"></span>
-                          <span className="capitalize text-gray-700 font-medium">{field}</span>
-                        </li>
-                      ))
-                    ) : (
-                      <li className="text-gray-500 text-sm">No fields selected</li>
-                    )}
-                  </ul>
+                <div className="flex flex-col h-full">
+                  <h2 className="font-bold text-sm sm:text-base border-b-4 border-gray-400 pb-2 px-4 pt-4 mb-2 uppercase text-gray-800 flex-shrink-0">Your Fields</h2>
+                  <div className="overflow-y-auto px-4 flex-grow">
+                    <ul className="space-y-2">
+                      {isField.length > 0 ? (
+                        isField.map((field, index) => (
+                          <li key={index} className="flex items-center py-1">
+                            <span className="w-2 h-2 bg-gray-800 rounded-full mr-2"></span>
+                            <span className="capitalize text-gray-700 font-medium">{field}</span>
+                          </li>
+                        ))
+                      ) : (
+                        <li className="text-gray-500 text-sm py-1">No fields selected</li>
+                      )}
+                    </ul>
+                  </div>
                 </div>
               )}
 
               {activeSection === 'history' && (
-                <div className="h-full flex flex-col">
-                  <h2 className="font-bold text-sm sm:text-base border-b-4 border-gray-400 pb-2 mx-4 mt-4 mb-2 uppercase text-gray-800">Chat History</h2>
-                  <div className="overflow-y-auto px-4 flex-grow" style={{ maxHeight: 'calc(100% - 40px)' }}>
+                <div className="flex flex-col h-full">
+                  <h2 className="font-bold text-sm sm:text-base border-b-4 border-gray-400 pb-2 px-4 pt-4 mb-2 uppercase text-gray-800 flex-shrink-0">Chat History</h2>
+                  <div className="overflow-y-auto px-4 flex-grow">
                     <ul className="space-y-1">
                       {history.length > 0 ? (
                         history.map((item, index) => (
@@ -170,7 +179,7 @@ const Sidebar = () => {
                           </li>
                         ))
                       ) : (
-                        <li className="text-gray-500 text-sm">No history available</li>
+                        <li className="text-gray-500 text-sm py-1">No history available</li>
                       )}
                     </ul>
                   </div>
@@ -181,16 +190,18 @@ const Sidebar = () => {
         </div>
 
         {/* Logout button at the bottom */}
-        <div className="p-4 mt-auto">
+        <div className="p-4 mt-auto flex-shrink-0">
           <button 
             onClick={logout}
-            className="flex items-center w-full justify-center sm:justify-start px-4 py-3 
+            className={`flex items-center w-full ${isSidebarOpen ? "justify-start px-4" : "justify-center px-2"} py-3 
                      border-4 border-gray-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.6)] 
                      rounded-lg bg-gray-800 text-white hover:bg-gray-700
                      transition-all duration-200 hover:translate-x-1 hover:translate-y-1 
-                     hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.6)]"
+                     hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.6)]`}
           >
-            <IoLogOut size={20} />
+            <div className="flex items-center justify-center min-w-[20px]">
+              <IoLogOut size={20} />
+            </div>
             {isSidebarOpen && <span className="ml-3 font-bold uppercase">Logout</span>}
           </button>
         </div>

@@ -45,7 +45,7 @@ const Notification = () => {
                     setHasNewNotification(false); 
                 }}
             >
-                <IoIosNotifications size={30} color="#A0153E" />
+                <IoIosNotifications size={24} color="gray" />
                 
                 {/* Red dot for new notifications */}
                 {hasNewNotification && (
