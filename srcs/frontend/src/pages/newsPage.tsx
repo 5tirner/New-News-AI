@@ -2,14 +2,15 @@ import { useEffect } from "react";
 import { getCookie } from "../utils/getCoockie";
 import { useNews } from "../context/newsContext";
 import { useNavigate } from "react-router-dom";
+import { BiMessageDetail } from "react-icons/bi";
+import { MdDelete } from "react-icons/md";
 
 const API_URL = '/ai/api/history'; 
 
 const NewsPage = () => {
-  const { news, removeNews , addNews} = useNews();
+  const { news, removeNews, addNews } = useNews();
   const navigate = useNavigate();
   let Access = getCookie("Access-Token");
-
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -28,7 +29,6 @@ const NewsPage = () => {
         }
 
         const json = await response.json();
-
         const historyArray = Object.values(json);
 
         historyArray.forEach((dataObj) => {
@@ -52,46 +52,65 @@ const NewsPage = () => {
     };
 
     fetchHistory();
-  }, [Access]); // Re-run if token changes
+  }, [Access, addNews]); // Re-run if token changes
   
   return (
-    <div className="fixed top-0 left-0 py-24 px-10 min-h-screen w-full">
-      {/* Main Section */}
-      <main className=" w-full text-center">
-        <h2 className="text-3xl font-bold">Find Your News Easily</h2>
-        <p className="text-gray-600 mt-2">What’s new?</p>
-
-        {/* News Cards */}
-        <div className=" w-full h-dvh mt-8 flex flex-col gap-6 items-center justify-start overflow-y-auto ">
-        {news.length > 0 ? (
-            news.map((newsItem, index) => (
-              <div
-                key={index}
-                className="w-[80%] md:w-[60%] p-4 border-2 border-black bg-white shadow-[4px_4px_0px_rgba(0,0,0,1)] text-left"
-              >
-                <h3 className="font-bold">{newsItem.title}</h3>
-                <p className="text-sm mt-1">{newsItem.content}</p>
-                <div className="mt-4 flex gap-2">
-                  <button
-                    onClick={() => navigate('/journalist', {state : {newsItem}})}
-                    className="border-2 border-black px-4 py-2 bg-gray-700 text-white shadow-[2px_2px_0px_rgba(0,0,0,1)]"
-                  >
-                    Talk to Journalist!
-                  </button>
-                  <button
-                    onClick={() => removeNews(index)}
-                    className="border-2 border-black px-4 py-2 bg-red-600 text-white shadow-[2px_2px_0px_rgba(0,0,0,1)]"
-                  >
-                    Remove
-                  </button>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-500">No news available yet.</p>
-          )}
+    <div className="fixed top-0 left-0 w-full h-screen bg-gray-200 pt-16">
+      {/* Main Section with matching style */}
+      <div className="h-full flex flex-col overflow-hidden">
+        <div className="text-center px-4 pt-8">
+          <h2 className="text-4xl font-black text-gray-800 uppercase tracking-tight">NEWS FEED</h2>
+          <p className="mt-2 text-gray-600 font-bold">What's happening today?</p>
         </div>
-      </main>
+
+        {/* News Cards - This container will scroll */}
+        <div className="flex-1 overflow-y-auto px-4 mt-8 pb-16">
+          <div className="flex flex-col gap-6 items-center">
+            {news.length > 0 ? (
+              news.map((newsItem, index) => (
+                <div
+                  key={index}
+                  className="w-full sm:w-[90%] md:w-[80%] p-6 bg-white rounded-lg border-4 border-gray-800 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.6)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,0.6)] transition-all duration-200"
+                >
+                  <h3 className="font-black text-gray-800 text-xl uppercase">{newsItem.title}</h3>
+                  <p className="mt-3 text-gray-700 font-medium">{newsItem.content}</p>
+                  
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between mt-5 pt-4 border-t-2 border-gray-400">
+                    <div className="text-sm text-gray-600 font-bold">
+                      <span className="uppercase">{newsItem.from}</span>
+                      {newsItem.date && (
+                        <span className="ml-2">• {new Date(newsItem.date).toLocaleDateString()}</span>
+                      )}
+                    </div>
+                    
+                    <div className="mt-4 sm:mt-0 flex gap-3">
+                      <button
+                        onClick={() => navigate('/journalist', {state: {newsItem}})}
+                        className="flex items-center px-4 py-2 bg-gray-800 text-white rounded border-2 border-gray-800 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,0.6)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all duration-200"
+                      >
+                        <BiMessageDetail size={20} />
+                        <span className="ml-2">TALK</span>
+                      </button>
+                      
+                      <button
+                        onClick={() => removeNews(index)}
+                        className="flex items-center px-4 py-2 bg-gray-200 text-gray-800 rounded border-2 border-gray-800 font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,0.6)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all duration-200"
+                      >
+                        <MdDelete size={20} />
+                        <span className="ml-2">DELETE</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="p-8 text-center w-[80%] bg-white border-4 border-gray-800 rounded-lg shadow-[8px_8px_0px_0px_rgba(0,0,0,0.6)]">
+                <p className="text-gray-800 font-bold text-xl">NO NEWS AVAILABLE YET.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
