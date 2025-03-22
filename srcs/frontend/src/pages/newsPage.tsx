@@ -55,57 +55,57 @@ const NewsPage = () => {
   }, [Access, addNews]); // Re-run if token changes
   
   return (
-    <div className="fixed top-0 left-0 w-full h-screen bg-white pt-16">
+    <div className="fixed top-0 left-0 w-full h-screen bg-gray-200 pt-16">
       {/* Main Section with matching style */}
       <div className="h-full flex flex-col overflow-hidden">
         <div className="text-center px-4 pt-8">
-          <h2 className="text-3xl font-bold text-[#A0153E]">Find Your News Easily</h2>
-          <p className="mt-2 text-gray-700">What's new today?</p>
+          <h2 className="text-4xl font-black text-[#A0153E] uppercase tracking-tight">NEWS FEED</h2>
+          <p className="mt-2 text-gray-800 font-bold">What's happening today?</p>
         </div>
 
         {/* News Cards - This container will scroll */}
         <div className="flex-1 overflow-y-auto px-4 mt-8 pb-16">
-          <div className="flex flex-col gap-4 items-center">
+          <div className="flex flex-col gap-6 items-center">
             {news.length > 0 ? (
               news.map((newsItem, index) => (
                 <div
                   key={index}
-                  className="w-full sm:w-[90%] md:w-[80%] p-5 bg-[#FFCC81] rounded shadow-md hover:shadow-lg transition-shadow duration-300"
+                  className="w-full sm:w-[90%] md:w-[80%] p-6 bg-[#FFCC81] rounded-lg border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,0.8)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,0.8)] transition-all duration-200"
                 >
-                  <h3 className="font-bold text-[#A0153E] text-lg">{newsItem.title}</h3>
-                  <p className="mt-2 text-gray-800">{newsItem.content}</p>
+                  <h3 className="font-black text-[#A0153E] text-xl uppercase">{newsItem.title}</h3>
+                  <p className="mt-3 text-gray-900 font-medium">{newsItem.content}</p>
                   
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between mt-4">
-                    <div className="text-sm text-gray-700">
-                      <span>{newsItem.from}</span>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between mt-5 pt-4 border-t-2 border-black">
+                    <div className="text-sm text-gray-800 font-bold">
+                      <span className="uppercase">{newsItem.from}</span>
                       {newsItem.date && (
                         <span className="ml-2">• {new Date(newsItem.date).toLocaleDateString()}</span>
                       )}
                     </div>
                     
-                    <div className="mt-3 sm:mt-0 flex gap-2">
+                    <div className="mt-4 sm:mt-0 flex gap-3">
                       <button
                         onClick={() => navigate('/journalist', {state: {newsItem}})}
-                        className="flex items-center px-4 py-2 bg-[#A0153E] text-white rounded hover:bg-opacity-90 transition-colors"
+                        className="flex items-center px-4 py-2 bg-[#A0153E] text-white rounded border-2 border-black font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,0.8)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all duration-200"
                       >
                         <BiMessageDetail size={20} />
-                        <span className="ml-2">Talk to Journalist</span>
+                        <span className="ml-2">TALK</span>
                       </button>
                       
                       <button
                         onClick={() => removeNews(index)}
-                        className="flex items-center px-4 py-2 bg-[#ffbb5c] text-[#A0153E] rounded hover:bg-opacity-90 transition-colors"
+                        className="flex items-center px-4 py-2 bg-[#ffbb5c] text-[#A0153E] rounded border-2 border-black font-bold shadow-[4px_4px_0px_0px_rgba(0,0,0,0.8)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all duration-200"
                       >
                         <MdDelete size={20} />
-                        <span className="ml-2">Remove</span>
+                        <span className="ml-2">DELETE</span>
                       </button>
                     </div>
                   </div>
                 </div>
               ))
             ) : (
-              <div className="p-8 text-center w-full">
-                <p className="text-gray-500">No news available yet.</p>
+              <div className="p-8 text-center w-full bg-white border-4 border-black rounded-lg shadow-[8px_8px_0px_0px_rgba(0,0,0,0.8)]">
+                <p className="text-gray-800 font-bold text-xl">NO NEWS AVAILABLE YET.</p>
               </div>
             )}
           </div>
