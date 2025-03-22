@@ -4,8 +4,6 @@ import { getCookie } from "../utils/getCoockie";
 import Sidebar from "../components/Sidebar";
 import { useParams } from "react-router-dom";
 
-
-
 const ChatSection = () => {
   const { conversationId } = useParams();
   const Access = getCookie("Access-Token");
@@ -15,19 +13,18 @@ const ChatSection = () => {
   const [newMessage, setNewMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false); // Loading state for bot response
   const idd = location.state?.newsItem || "";
-  const effectiveConversationId = conversationId ;
 
-  // if (event.key === "Enter" && message.trim())
+  console.log('this is id : ' + conversationId, idd.id);
+
   let newsItem;
-  if (!idd.id){
-    newsItem = effectiveConversationId;
-  }else{
-    newsItem = idd.id;
+  if (idd.id) {
+    newsItem = idd.id; // Use idd.id if available
+  } else {
+    newsItem = conversationId; // Fallback to effectiveConversationId
   }
-  console.log('this is id : ' + effectiveConversationId , idd.id)
-  // console.log("Chat Bot Items : ", newsItem.id);
-  const handleSendMessage = async (e) => {
-    if (e.key === "Enter" && newMessage.trim() !== "") {
+
+  const handleSendMessage = async (event) => {
+    if ((event.type === "click" || event.key === "Enter") && newMessage.trim() !== "") {
       const userMessage = { text: newMessage, isUser: true };
       setMessages((prevMessages) => [...prevMessages, userMessage]);
       setNewMessage("");
@@ -65,19 +62,27 @@ const ChatSection = () => {
 
   return (
     <>
-      <div className="min-h-screen flex flex-row bg-[#fdfbee]">
-        <Sidebar/>
-        <div className="w-[100%] p-5 border-2 border-black flex flex-col items-center justify-center ">
-          <div className="w-[100%] text-right">
-            <button className="bg-gray-200  w-[5%]  text-black shadow-[2px_2px_0px_rgba(0,0,0,1)]" onClick={() => navigate(-1)} >Back</button>
+      <div className="min-h-96 flex flex-col md:flex-row bg-[#fdfbee]">
+        <Sidebar />
+        <div className="bg-[#fdfbee] w-full flex-1 p-3 sm:p-5 flex flex-col items-center justify-center gap-4 sm:gap-6 md:gap-8 lg:gap-10 fixed">
+          <div className="w-full max-w-4xl px-2 text-right">
+            <button 
+              className="bg-red-600 py-2 px-3 sm:px-4 w-auto border-2 border-black text-white shadow-[2px_2px_0px_rgba(0,0,0,1)]" 
+              onClick={() => navigate(-1)}
+            >
+              Back
+            </button>
           </div>
-          <div className=" md:h-64 lg:h-96 w-[50%] flex flex-col items-center justify-center gap-5 ">
-
-            <div className="w-[100%] flex flex-col gap-2 items-center justify-center overflow-y-auto">
+          
+          <div className="w-full max-w-4xl h-[60vh] md:h-[70vh] flex flex-col items-center justify-end gap-3 sm:gap-5">
+            <div className="flex flex-col gap-3 overflow-y-auto w-full h-full pb-3">
               {messages.map((message, index) => (
                 <div
                   key={index}
-                  className={`w-[100%] p-2 border-black border shadow-[2px_2px_0px_rgba(0,0,0,1)]  ${message.isUser ? "bg-[#F5E6CF] self-end" : "bg-gray-200 self-start"
+                  className={`max-w-[85%] sm:max-w-[75%] p-2 sm:p-3 border-black border shadow-[2px_2px_0px_rgba(0,0,0,1)]
+                    ${message.isUser
+                      ? "bg-[#F5E6CF] ml-auto"
+                      : "bg-gray-200 mr-auto"
                     }`}
                 >
                   <p className={message.isUser ? "text-right" : "text-left"}>
@@ -85,21 +90,24 @@ const ChatSection = () => {
                   </p>
                 </div>
               ))}
-              {isLoading && <p className="text-gray-500 italic"> Journalist is typing...</p>}
+              {isLoading && (
+                <p className="text-gray-500 italic text-center">Journalist is typing...</p>
+              )}
             </div>
-            <div className=" w-full h-[10%] flex gap-5 items-center justify-center border-black border shadow-[2px_2px_0px_rgba(0,0,0,1)] ">
+            
+            <div className="w-full flex gap-2 items-center border-black border shadow-[2px_2px_0px_rgba(0,0,0,1)] p-2 bg-white">
               <input
                 type="text"
                 value={newMessage}
                 onKeyDown={handleSendMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
                 placeholder="Type a message..."
-                className="w-[80%] p-2 h-[100%] focus:outline-none hover:border-transparent"
+                className="flex-1 p-2 focus:outline-none hover:border-transparent"
               />
               <button
-                className="border border-black size-fit w-[10%] shadow-[2px_2px_0px_rgba(0,0,0,1)]"
+                className="border border-black px-2 sm:px-4 py-2 shadow-[2px_2px_0px_rgba(0,0,0,1)] whitespace-nowrap text-sm sm:text-base"
                 onClick={handleSendMessage}
-                disabled={isLoading} // Disable button when bot is responding
+                disabled={isLoading}
               >
                 {isLoading ? "..." : "Send"}
               </button>
@@ -112,3 +120,4 @@ const ChatSection = () => {
 };
 
 export default ChatSection;
+

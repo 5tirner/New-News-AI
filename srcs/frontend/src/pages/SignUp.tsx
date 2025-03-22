@@ -8,7 +8,7 @@ const API_URL = '/auth/api/signup';
 const SignUp = () => {
   const navigate = useNavigate();
   const { showAlert } = useAlert();
-  const [name, setName] = useState("");
+  // const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
