@@ -76,6 +76,7 @@ async def get_tweets(searchFor, cookies, identity):
         startConversation = conversations.objects.get(identity=identity)
         AllTweets[0].pop('created_at')
         startConversation.topics[conv_id] = {f"News 1": AllTweets[0]}
+        startConversation.titles[conv_id] = {'title': AllTweets[0]['text'][0:10] + '...', 'notification': AllTweets[0]}
         startConversation.save()
         return AllTweets[0]
     return None
@@ -113,6 +114,7 @@ async def get_google_news(params, newsurl, identity):
             }
             startConversation = conversations.objects.get(identity=identity)
             startConversation.topics[conv_id] = {f"News 1": theRes}
+            startConversation.titles[conv_id] = {'title': title + '...', 'notification': theRes}
             startConversation.save()
             return theRes
         else:
@@ -138,7 +140,7 @@ class lastNews(AsyncJsonWebsocketConsumer):
     }
     newsapikey = settings.NEWS_API
     newsurl = settings.NEWS_URL
-    delay = 60
+    delay = 120
     
     async def connect(self):
         print(f"The Fileds {self.scope.get('fields')}")

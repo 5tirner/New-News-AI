@@ -16,4 +16,4 @@ class verificationSystem(models.Model):
 
 class userFields(models.Model):
     identity = models.EmailField(unique=True, null=False, primary_key=True)
-    fields = JSONField()
+    fields = JSONField(default=dict)

@@ -36,7 +36,7 @@ const Notification = () => {
     }, [isNotificationVisible]);
 
     return (
-        <div className="relative text-black">
+        <div className="z-50 relative text-black">
             {/* Notification Icon */}
             <div 
                 className="relative cursor-pointer"
@@ -45,7 +45,7 @@ const Notification = () => {
                     setHasNewNotification(false); 
                 }}
             >
-                <IoIosNotifications size={30} color="gray" />
+                <IoIosNotifications size={30} color="#A0153E" />
                 
                 {/* Red dot for new notifications */}
                 {hasNewNotification && (
