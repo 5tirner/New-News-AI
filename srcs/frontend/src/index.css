@@ -4,6 +4,7 @@
 
 body {
   overflow: hidden;
+  background: hsl(var(--background));
 }
 
 @layer base {

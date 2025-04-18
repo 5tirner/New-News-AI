@@ -12,7 +12,7 @@ function App() {
       <AuthProvider>
         <NewsProvider>
           <div className="min-h-screen bg-gray-100 text-gray-900" >
-            <Navbar />
+        
             <AppRouter />
             <AlertPopup />
           </div>
