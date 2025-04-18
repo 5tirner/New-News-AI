@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import  Notification  from "./Notification";
-import { CiLogout } from "react-icons/ci";
+// import { CiLogout } from "react-icons/ci";
 import { useAuth } from "../context/AuthContext";
 
 import { useLocation } from "react-router-dom"; // Import useLocation
@@ -12,22 +12,21 @@ const Navbar = () => {
   const isHome = location.pathname === "/home" || location.pathname === "/journalist";
 
   return (
-    <nav className="static top-0 left-0 bg-[#F5E6CF] p-4 border-b border-[#DDBD8A]">
+    <nav className="fixed w-full z-40 static top-0 left-0 bg-[#FFCC81] p-4 border-b border-[#DDBD8A]">
       <div className="container flex justify-between text-white">
-        <h1 className="text-xl font-bold text-black">Journalist</h1>
-        
+        <Link to="/home" className="text-xl font-bold text-black">Journalist</Link>
         {isHome ? (
           <>
             <div className="space-x-4">
               <Link to="/home" className="font-bold text-black">Home</Link>
             </div>
             <div className="icons space-x-4 flex">
-              <Notification />
-              <CiLogout 
+              <Notification  />
+              {/* <CiLogout 
                 size={30}
-                color="gray"
+                color="#A0153E"
                 onClick={logout}
-              />
+              /> */}
             </div>
           </>
         ) : (
