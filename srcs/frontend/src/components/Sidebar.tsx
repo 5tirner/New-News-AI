@@ -7,7 +7,7 @@ import { BiHistory } from "react-icons/bi";
 import { MdCategory } from "react-icons/md";
 import { useAuth } from "../context/AuthContext";
 
-const Sidebar = () => {
+const Sidebar = ({ onFieldSelect }) => {
   const navigate = useNavigate();
   const { logout } = useAuth();
   const Access = getCookie("Access-Token");
@@ -15,6 +15,7 @@ const Sidebar = () => {
   const [isField, setField] = useState([]);
   const [history, setHistory] = useState([]);
   const [activeSection, setActiveSection] = useState('fields');
+  const [activeField, setActiveField] = useState("All News");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,6 +77,14 @@ const Sidebar = () => {
     }
   };
 
+  const handleFieldClick = (field) => {
+    setActiveField(field);
+    onFieldSelect(field); // Pass the selected field to the parent component
+    if (window.innerWidth < 768) {
+      setIsSidebarOpen(false); // Close sidebar on mobile
+    }
+  };
+
   return (
     <>
       {/* Sidebar - positioned below navbar */}
@@ -83,8 +92,8 @@ const Sidebar = () => {
         className={`
           fixed z-30 bg-gray-200 transition-all duration-300 shadow-md border-r-4 border-gray-400
           ${isSidebarOpen ? "w-64 sm:w-72" : "w-16"}
-          top-16 left-0 h-[calc(100vh-64px)] // Changed from h-full and top-0
-          flex flex-col
+          top-16 left-0 h-[calc(100vh-64px)] // Dynamically adjust height based on Navbar height
+          flex flex-col overflow-hidden
         `}
       >
         {/* Toggle button */}
@@ -102,8 +111,8 @@ const Sidebar = () => {
           </button>
         </div>
 
-        {/* Content container with fixed height */}
-        <div className="flex flex-col flex-grow px-2 mt-2 overflow-hidden">
+        {/* Content container */}
+        <div className="flex flex-col flex-grow px-2 mt-2 overflow-y-auto">
           {/* Navigation buttons */}
           <div className="flex-shrink-0">
             {/* Fields button */}
@@ -139,19 +148,32 @@ const Sidebar = () => {
             </button>
           </div>
 
-          {/* Content section with fixed height */}
+          {/* Content section */}
           {isSidebarOpen && (
-            <div className="h-full max-h-[calc(100vh-64px-180px)] mt-2 border-4 border-gray-800 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.6)] rounded-lg bg-white flex flex-col overflow-hidden">
+            <div className="h-full mt-2 border-4 border-gray-800 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.6)] rounded-lg bg-white flex flex-col overflow-y-auto">
               {activeSection === 'fields' && (
                 <div className="flex flex-col h-full">
                   <h2 className="font-bold text-sm sm:text-base border-b-4 border-gray-400 pb-2 px-4 pt-4 mb-2 uppercase text-gray-800 flex-shrink-0">Your Fields</h2>
                   <div className="overflow-y-auto px-4 flex-grow">
                     <ul className="space-y-2">
+                      <li
+                        className={`cursor-pointer py-2 px-4 rounded-lg ${
+                          activeField === "All News" ? "bg-gray-300" : "hover:bg-gray-200"
+                        }`}
+                        onClick={() => handleFieldClick("All News")}
+                      >
+                        All News
+                      </li>
                       {isField.length > 0 ? (
                         isField.map((field, index) => (
-                          <li key={index} className="flex items-center py-1">
-                            <span className="w-2 h-2 bg-gray-800 rounded-full mr-2"></span>
-                            <span className="capitalize text-gray-700 font-medium">{field}</span>
+                          <li
+                            key={index}
+                            className={`cursor-pointer py-2 px-4 rounded-lg ${
+                              activeField === field ? "bg-gray-300" : "hover:bg-gray-200"
+                            }`}
+                            onClick={() => handleFieldClick(field)}
+                          >
+                            {field}
                           </li>
                         ))
                       ) : (
@@ -189,7 +211,7 @@ const Sidebar = () => {
           )}
         </div>
 
-        {/* Logout button at the bottom */}
+        {/* Logout button */}
         <div className="p-4 mt-auto flex-shrink-0">
           <button 
             onClick={logout}

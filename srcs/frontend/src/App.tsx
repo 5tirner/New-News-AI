@@ -11,7 +11,7 @@ function App() {
     <AlertProvider>
       <AuthProvider>
         <NewsProvider>
-          <div className="min-h-screen bg-gray-100 text-gray-900" >
+          <div className="min-h-screen bg-gray-200 text-gray-900" >
         
             <AppRouter />
             <AlertPopup />
